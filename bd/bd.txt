@@ -1,0 +1,43 @@
+CREATE DATABASE clube_leitura OWNER aluno;
+
+-- Tabela caixa
+CREATE TABLE caixa (
+    idcaixa SERIAL PRIMARY KEY,
+    cor VARCHAR(50)
+);
+
+-- Tabela revista
+CREATE TABLE revista (
+    idrevista SERIAL PRIMARY KEY,
+    colecao VARCHAR(100),
+    num_edicao INTEGER,
+    ano_revista INTEGER,
+    disponibilidade BOOLEAN,
+    idcaixa INTEGER,
+    FOREIGN KEY (idcaixa) REFERENCES caixa(idcaixa) ON DELETE SET NULL
+);
+
+-- Tabela pessoa
+CREATE TABLE pessoa (
+    idpessoa SERIAL PRIMARY KEY,
+    nome VARCHAR(100),
+    telefone VARCHAR(20)
+);
+
+-- Tabela emprestimo
+CREATE TABLE emprestimo (
+    idemprestimo SERIAL PRIMARY KEY,
+    idpessoa INTEGER,
+    idrevista INTEGER,
+    dataemprestimo DATE,
+    datadevolucao DATE,
+    FOREIGN KEY (idpessoa) REFERENCES pessoa(idpessoa) ON DELETE CASCADE,
+    FOREIGN KEY (idrevista) REFERENCES revista(idrevista) ON DELETE CASCADE
+);
+
+-- Tabela usuario
+CREATE TABLE usuario (
+    idusuario SERIAL PRIMARY KEY,
+    usuario VARCHAR(50),
+    senha VARCHAR(100)
+);
