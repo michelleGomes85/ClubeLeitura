@@ -3,6 +3,8 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
 	<title>Clube da Leitura</title>
 	
 	<!-- Link para o Favicon -->
@@ -20,8 +22,8 @@
 	<nav class="navbar">
 		<div class="navbar-container">
 			<a href="index.html" class="navbar-logo">
-			<img class="img-log" src="img/logo.png"> 
-			Clube da Leitura
+				<img class="img-log" src="img/logo.png"> 
+				Clube da Leitura
 			</a>
 			<div class="navbar-links">
 				<a href="index.html" class="nav-link home-link" title="Voltar para a página inicial"><i class="fas fa-home"></i></a>

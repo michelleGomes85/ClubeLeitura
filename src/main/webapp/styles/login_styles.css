@@ -1,0 +1,138 @@
+@charset "UTF-8";
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background: url('../img/login_background.webp') no-repeat center center fixed;
+	background-size: cover;
+	color: #fff;
+	font-family: Arial, sans-serif;
+	position: relative;
+}
+
+body::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5); /* Ajuste a opacidade conforme necessário */
+}
+
+.login-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	position: relative; /* Para garantir que o conteúdo fique acima da camada de fundo */
+}
+
+.login-box {
+	background-color: rgba(0, 0, 0, 0.7); /* Ajuste para um fundo mais escuro */
+	padding: 40px;
+	border-radius: 8px;
+	width: 100%;
+	max-width: 400px;
+	text-align: center;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+	border: 2px solid #fff;
+	position: relative; /* Para garantir que fique acima da camada de fundo */
+}
+
+h2 {
+	margin-bottom: 20px;
+	font-size: 2rem;
+	color: #f4f4f4;
+	text-transform: uppercase;
+}
+
+.input-group {
+	position: relative;
+	margin-bottom: 20px;
+}
+
+.input-group i {
+	position: absolute;
+	left: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #ccc;
+	font-size: 1.2rem;
+}
+
+.input-group input {
+	width: 100%;
+	padding: 10px 10px 10px 40px;
+	font-size: 1rem;
+	border: 2px solid #555;
+	border-radius: 4px;
+	background: #222;
+	color: #fff;
+}
+
+.input-group input:focus {
+	border-color: #3498db;
+	outline: none;
+}
+
+.password-toggle {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #ccc;
+	cursor: pointer;
+	font-size: 1.2rem;
+}
+
+button {
+	background-color: #3498db;
+	color: #fff;
+	padding: 10px 20px;
+	font-size: 1rem;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	width: 100%;
+	transition: background-color 0.3s ease;
+}
+
+button:hover {
+	background-color: #2980b9;
+}
+
+button:focus {
+	outline: none;
+}
+
+#togglePassword {
+	width: 50px;
+	left: 80%;
+	right: 0px !important;
+}
+
+@media (max-width: 600px) {
+	h2 {
+		font-size: 1.5rem;
+	}
+	.login-box {
+		padding: 30px;
+	}
+	.input-group input {
+		padding: 8px 10px 8px 40px;
+		font-size: 1rem;
+	}
+	button {
+		padding: 8px 16px;
+		font-size: 1rem;
+	}
+}
