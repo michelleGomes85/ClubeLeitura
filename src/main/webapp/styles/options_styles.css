@@ -1,0 +1,150 @@
+@charset "UTF-8";
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	padding: 20px;
+	background: url('../img/background.jpeg') no-repeat center center fixed;
+	background-size: cover; 
+	color: #ffffff;
+	font-family: Arial, sans-serif;
+	position: relative;
+}
+
+body::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5); 
+	z-index: -1; 
+}
+
+.navbar {
+	width: 100%;
+	background-color: #333;
+	padding: 15px 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10;
+}
+
+.navbar-container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 20px;
+}
+
+.navbar-logo {
+	display: flex;
+	color: #fff;
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-decoration: none;
+	align-items: center;
+	justify-content: center;
+}
+
+.img-log {
+	width: 55px;
+	height: auto;
+	filter: invert(100%) grayscale(50%) brightness(90%);
+	margin-right: 5px;
+}
+
+.navbar-links {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 120px; 
+}
+
+.nav-link {
+	color: #fff;
+	font-size: 1.5rem;
+	text-decoration: none;
+	position: relative;
+	transition: color 0.3s, transform 0.3s;
+}
+
+.nav-link:hover {
+	color: #f4f4f4;
+	transform: scale(1.1);
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 30px;
+	width: 100%;
+	max-width: 900px;
+	margin-top: 80px;
+}
+
+.grid-item {
+	background-color: #555; 
+	border: 2px solid #777; 
+	border-radius: 8px;
+	padding: 25px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	font-size: 1.2rem;
+	transition: background-color 0.3s, transform 0.3s;
+}
+
+.grid-item i {
+	font-size: 2rem;
+	margin-bottom: 15px;
+}
+
+.grid-item:hover {
+	background-color: #666;
+	cursor: pointer;
+	transform: scale(1.05); 
+	border-color: #999; 
+}
+
+@media (max-width: 600px) {
+	
+	.navbar-links {
+		display: none;
+	}
+	
+	.navbar-container {
+		justify-content: space-between;
+	}
+
+	.navbar-logo {
+		font-size: 1.5rem;
+	}
+	
+	.grid-item {
+		padding: 15px;
+		font-size: 1rem;
+	}
+	.grid-item i {
+		font-size: 1.5rem;
+	}
+	.grid {
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+	}
+}
