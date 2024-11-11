@@ -25,7 +25,7 @@ body::before {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.5); /* Ajuste a opacidade conforme necessário */
+	background: rgba(0, 0, 0, 0.5); 
 }
 
 .login-container {
@@ -33,11 +33,11 @@ body::before {
 	justify-content: center;
 	align-items: center;
 	height: 100%;
-	position: relative; /* Para garantir que o conteúdo fique acima da camada de fundo */
+	position: relative; 
 }
 
 .login-box {
-	background-color: rgba(0, 0, 0, 0.7); /* Ajuste para um fundo mais escuro */
+	background-color: rgba(0, 0, 0, 0.7);
 	padding: 40px;
 	border-radius: 8px;
 	width: 100%;
@@ -45,7 +45,7 @@ body::before {
 	text-align: center;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 	border: 2px solid #fff;
-	position: relative; /* Para garantir que fique acima da camada de fundo */
+	position: relative; 
 }
 
 h2 {
@@ -95,7 +95,7 @@ h2 {
 }
 
 button {
-	background-color: #3498db;
+	background-color: #19257c;
 	color: #fff;
 	padding: 10px 20px;
 	font-size: 1rem;

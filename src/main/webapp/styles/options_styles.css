@@ -14,7 +14,7 @@ body {
 	min-height: 100vh;
 	padding: 20px;
 	background: url('../img/background.jpeg') no-repeat center center fixed;
-	background-size: cover; 
+	background-size: cover;
 	color: #ffffff;
 	font-family: Arial, sans-serif;
 	position: relative;
@@ -27,18 +27,19 @@ body::before {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: rgba(0, 0, 0, 0.5); 
-	z-index: -1; 
+	background: rgba(22, 29, 102, 0.6); 
+	z-index: -1;
 }
 
 .navbar {
 	width: 100%;
-	background-color: #333;
+	background-color: #111;
 	padding: 15px 0;
 	position: fixed;
 	top: 0;
 	left: 0;
 	z-index: 10;
+	border-bottom: 2px solid #fff; 
 }
 
 .navbar-container {
@@ -72,7 +73,7 @@ body::before {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	width: 120px; 
+	width: 120px;
 }
 
 .nav-link {
@@ -98,8 +99,8 @@ body::before {
 }
 
 .grid-item {
-	background-color: #555; 
-	border: 2px solid #777; 
+	background-color: #000; 
+	border: 2px solid #fff; 
 	border-radius: 8px;
 	padding: 25px;
 	display: flex;
@@ -117,26 +118,21 @@ body::before {
 }
 
 .grid-item:hover {
-	background-color: #666;
+	background-color: #222;
 	cursor: pointer;
-	transform: scale(1.05); 
-	border-color: #999; 
+	transform: scale(1.05);
 }
 
 @media (max-width: 600px) {
-	
 	.navbar-links {
 		display: none;
 	}
-	
 	.navbar-container {
 		justify-content: space-between;
 	}
-
 	.navbar-logo {
 		font-size: 1.5rem;
 	}
-	
 	.grid-item {
 		padding: 15px;
 		font-size: 1rem;

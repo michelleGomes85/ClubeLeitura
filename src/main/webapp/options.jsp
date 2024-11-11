@@ -34,9 +34,6 @@
 
 	<!-- Grid de opções -->
 	<div class="grid">
-		<div class="grid-item">
-			<i class="fas fa-book"></i> Cadastrar Revista
-		</div>
 		
 		<div class="grid-item">
 			<i class="fas fa-box"></i> Cadastrar Caixa
@@ -44,6 +41,10 @@
 		
 		<div class="grid-item">
 			<i class="fas fa-user"></i> Cadastrar Pessoa
+		</div>
+		
+		<div class="grid-item">
+			<i class="fas fa-book"></i> Cadastrar Revista
 		</div>
 		
 		<div class="grid-item">
