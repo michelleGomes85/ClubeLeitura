@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="authentication.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,13 +22,13 @@
 	<!-- Menu de navegação -->
 	<nav class="navbar">
 		<div class="navbar-container">
-			<a href="index.html" class="navbar-logo">
+			<a href="home_page.jsp" class="navbar-logo">
 				<img class="img-log" src="img/logo.png"> 
 				Clube da Leitura
 			</a>
 			<div class="navbar-links">
-				<a href="index.html" class="nav-link home-link" title="Voltar para a página inicial"><i class="fas fa-home"></i></a>
-				<a href="logout.jsp" class="nav-link logout-link" title="Sair da conta"><i class="fas fa-sign-out-alt"></i></a>
+				<a href="home_page.jsp" class="nav-link home-link" title="Voltar para a página inicial"><i class="fas fa-home"></i></a>
+				<a href="controller?service=EfetuaLogout" class="nav-link logout-link" title="Sair da conta"><i class="fas fa-sign-out-alt"></i></a>
 			</div>
 		</div>
 	</nav>

@@ -23,6 +23,7 @@ public class UsuarioDAO {
     private static final String ERROR_DELETE = "Erro ao deletar um usuário no banco de dados";
     private static final String ERROR_LIST = "Erro ao listar usuários do banco de dados";
     private static final String ERROR_FIND_BY_ID = "Erro ao buscar um usuário pelo ID no banco de dados";
+    private static final String ERROR_INVALID_USER = "Erro usuário invalido";
     
     private static final String TABLE_NAME = "usuario";
     private static final String COLUMN_ID = "idusuario";
@@ -149,4 +150,25 @@ public class UsuarioDAO {
         
         return null; 
     }
+    
+	public Usuario validateCredential(String login, String senha) {
+		
+		String sql = String.format("SELECT * FROM %s WHERE usuario = ? and senha = ?", TABLE_NAME);
+		
+		Usuario usuario = null;
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, login);
+			stmt.setString(2, senha);
+			ResultSet resultSet = stmt.executeQuery();
+			while (resultSet.next()) {
+				usuario = new Usuario();
+				usuario.setUsuario(resultSet.getString(COLUMN_USUARIO));
+				usuario.setSenha(resultSet.getString(COLUMN_SENHA));
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(ERROR_INVALID_USER, e);
+		}
+
+		return usuario;
+	}
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="authentication.jsp"%>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -21,11 +22,11 @@
 
 	<nav class="navbar">
 		<div class="navbar-container">
-			<a href="index.html" class="navbar-logo"> <img class="img-log"
+			<a href="home_page.jsp" class="navbar-logo"> <img class="img-log"
 				src="img/logo.png"> Clube da Leitura
 			</a>
 			<div class="navbar-links">
-				<a href="logout.jsp" class="nav-link logout-link"
+				<a href="controller?service=EfetuaLogout" class="nav-link logout-link"
 					title="Sair da conta"><i class="fas fa-sign-out-alt"></i></a>
 			</div>
 		</div>
