@@ -11,6 +11,8 @@
     max-height: 700px;
     overflow-y: auto;
     color: #fff; 
+    position: relative; /* Ajusta o posicionamento dentro da tela */
+    z-index: 10; /* Garante que o formulário esteja acima de outros elementos */
 }
 
 .register-form h1 {
@@ -116,6 +118,38 @@
 
 .modal .btn-submit:hover {
     background: #1565c0;
+}
+
+/* Estilos para o Select */
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+select option {
+    padding: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
 }
 
 @media (max-width: 768px) {

@@ -44,9 +44,9 @@
 			<i class="fas fa-user"></i> Cadastrar Pessoa
 		</a>
 		
-		<div class="grid-item">
+		<a href="register_magazine.jsp" class="grid-item">
 			<i class="fas fa-book"></i> Cadastrar Revista
-		</div>
+		</a>
 		
 		<div class="grid-item">
 			<i class="fas fa-hand-holding"></i> Cadastrar Empréstimo

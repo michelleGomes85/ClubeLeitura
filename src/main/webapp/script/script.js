@@ -24,10 +24,6 @@ function closeModal() {
     modal.style.display = "none";
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    showModal();
-});
-
 function formatPhone(input) {
     let phone = input.value.replace(/\D/g, '');
     
@@ -43,3 +39,24 @@ function formatPhone(input) {
         input.value = input.value.substring(0, 15); 
     }
 }
+
+function formatYear() {
+	var yearInput = document.getElementById("ano-revista");
+    var currentYear = new Date().getFullYear();
+    var yearValue = yearInput.value;
+
+    if (yearValue > currentYear)
+        yearInput.value = currentYear;
+
+    if (yearValue < 0)
+        yearInput.value = 0;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    
+	var yearInput = document.getElementById("ano-revista");
+	
+	yearInput.addEventListener("input", formatYear);
+	
+	showModal();
+});
