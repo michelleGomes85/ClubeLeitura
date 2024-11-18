@@ -27,3 +27,19 @@ function closeModal() {
 document.addEventListener("DOMContentLoaded", () => {
     showModal();
 });
+
+function formatPhone(input) {
+    let phone = input.value.replace(/\D/g, '');
+    
+    if (phone.length <= 10) {
+        phone = phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    } else {
+        phone = phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    }
+    
+    input.value = phone;
+    
+    if (input.value.length > 15) {
+        input.value = input.value.substring(0, 15); 
+    }
+}

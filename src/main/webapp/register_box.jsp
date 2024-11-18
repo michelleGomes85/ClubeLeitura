@@ -36,14 +36,14 @@
             
             <button type="submit" class="btn-submit">Cadastrar Caixa</button>
             
-            <input type="text" hidden="true" name="service" value="RegisterCash">
+            <input type="text" hidden="true" name="service" value="RegisterBox">
         </form>
     </main>
     
     <c:if test="${not empty messageReturn}">
 	    <div id="messageModal" class="modal">
 	        <div class="modal-content">
-	            <h2>Sucesso!</h2>
+	            <h2>Messagem Informativa</h2>
 	            <p><c:out value="${messageReturn}" /></p>
 	            <button onclick="closeModal()" class="btn-submit">Fechar</button>
 	        </div>

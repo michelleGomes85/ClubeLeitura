@@ -8,13 +8,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import main.java.tsi.daw.dao.CaixaDAO;
 import main.java.tsi.daw.model.Caixa;
 
-public class RegisterCash implements Service {
+public class RegisterBox implements Service {
 
 	private static final String PARAMETER_COLOR = "cor";
 	private static final String SUCCESS_MESSAGE_STR = "Caixa %s cadastrada com sucesso!";
 	private static final String MESSAGE_RETURN = "messageReturn";
 	
-	private static final String PAGE_BACK = "cash_register.jsp";
+	private static final String PAGE_BACK = "register_box.jsp";
 	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)

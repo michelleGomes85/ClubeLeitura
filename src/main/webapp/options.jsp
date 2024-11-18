@@ -36,13 +36,13 @@
 	<!-- Grid de opções -->
 	<div class="grid">
 		
-		<a href="cash_register.jsp" class="grid-item">
+		<a href="register_box.jsp" class="grid-item">
 			<i class="fas fa-box"></i> Cadastrar Caixa
 		</a>
 		
-		<div class="grid-item">
+		<a href="register_person.jsp" class="grid-item">
 			<i class="fas fa-user"></i> Cadastrar Pessoa
-		</div>
+		</a>
 		
 		<div class="grid-item">
 			<i class="fas fa-book"></i> Cadastrar Revista
