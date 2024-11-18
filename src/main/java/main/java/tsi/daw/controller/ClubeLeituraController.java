@@ -34,6 +34,8 @@ public class ClubeLeituraController extends HttpServlet {
         // Obtém o nome da classe lógica a ser executada
         String nameClass = "main.java.tsi.daw.service." + request.getParameter("service");
         
+        request.removeAttribute("messageReturn");
+        
         String url = "";
 
         try {
@@ -43,6 +45,7 @@ public class ClubeLeituraController extends HttpServlet {
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
+            System.out.println("erro");
         }
 
         request.getRequestDispatcher(url).forward(request, response);

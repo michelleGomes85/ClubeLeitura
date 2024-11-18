@@ -12,3 +12,18 @@ function togglePasswordVisibility() {
 		toggleIcon.classList.add('fa-eye');
 	}
 }
+
+function showModal() {
+    const modal = document.getElementById("messageModal");
+	if (modal)
+    	modal.style.display = "flex";
+}
+
+function closeModal() {
+    const modal = document.getElementById("messageModal");
+    modal.style.display = "none";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    showModal();
+});

@@ -44,7 +44,7 @@ body::before {
 
 .navbar-container {
 	width: 100%;
-	max-width: 1200px;
+	max-width: 1300px;
 	margin: 0 auto;
 	display: flex;
 	justify-content: space-between;
@@ -73,7 +73,6 @@ body::before {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	width: 120px;
 }
 
 .nav-link {
@@ -82,6 +81,7 @@ body::before {
 	text-decoration: none;
 	position: relative;
 	transition: color 0.3s, transform 0.3s;
+	margin-left: 40px;
 }
 
 .nav-link:hover {
@@ -99,6 +99,8 @@ body::before {
 }
 
 .grid-item {
+	text-decoration: none;
+	color: #FFF;
 	background-color: #000; 
 	border: 2px solid #fff; 
 	border-radius: 8px;
@@ -124,6 +126,7 @@ body::before {
 }
 
 @media (max-width: 600px) {
+	
 	.navbar-links {
 		display: none;
 	}

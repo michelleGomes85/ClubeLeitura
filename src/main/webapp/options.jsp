@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	<title>Clube da Leitura</title>
+	<title>Clube da Leitura - Opções</title>
 	
 	<!-- Link para o Favicon -->
     <link rel="icon" href="img/favicon.png" type="image/x-icon">
@@ -36,9 +36,9 @@
 	<!-- Grid de opções -->
 	<div class="grid">
 		
-		<div class="grid-item">
+		<a href="cash_register.jsp" class="grid-item">
 			<i class="fas fa-box"></i> Cadastrar Caixa
-		</div>
+		</a>
 		
 		<div class="grid-item">
 			<i class="fas fa-user"></i> Cadastrar Pessoa
