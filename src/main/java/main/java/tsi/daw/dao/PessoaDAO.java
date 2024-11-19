@@ -91,15 +91,14 @@ public class PessoaDAO {
     }
     
     /**
-     * Lista todas as pessoas cadastradas no banco de dados.
+     * Método auxiliar para executar consultas SQL e retornar uma lista de objetos Pessoa.
      *
-     * @return Lista de objetos Pessoa
+     * @param sql A consulta SQL a ser executada.
+     * @return Lista de objetos Pessoa correspondente à consulta SQL.
      */
-    public List<Pessoa> list() {
+    private List<Pessoa> listPessoa(String sql) {
     	
-        List<Pessoa> listPessoas = new ArrayList<>();
-        
-        String sql = String.format("SELECT * FROM %s", TABLE_NAME);
+    	List<Pessoa> listPessoas = new ArrayList<>();
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
         	
@@ -118,6 +117,47 @@ public class PessoaDAO {
         }
         
         return listPessoas;
+    }
+    
+    /**
+     * Lista todas as pessoas cadastradas no banco de dados.
+     *
+     * @return Lista de objetos Pessoa
+     */
+    public List<Pessoa> list() {
+    	return listPessoa(String.format("SELECT * FROM %s", TABLE_NAME));
+    }
+    
+    /**
+     * Lista todas as pessoas que não possuem empréstimos pendentes.
+     * Inclui pessoas que não estão na tabela de empréstimos e pessoas cujo
+     * campo de data_devolucao está preenchido (empréstimos concluídos).
+     *
+     * @return Lista de objetos Pessoa sem empréstimos pendentes.
+     */
+    public List<Pessoa> listPessoasSemEmprestimos() {
+
+    	return listPessoa(String.format("SELECT * FROM %s p " +
+						    	        "WHERE NOT EXISTS (" +
+						    	        "    SELECT 1 FROM emprestimo e " +
+						    	        "    WHERE e.idpessoa = p.%s AND e.datadevolucao IS NULL" +
+						    	        ")", 
+    	        TABLE_NAME, COLUMN_ID));
+    }
+    
+    /**
+     * Lista todas as pessoas que possuem empréstimos pendentes.
+     * 
+     * Apenas retorna pessoas com registros na tabela de empréstimos onde a data de devolução é NULL.
+     *
+     * @return Lista de objetos Pessoa que possuem empréstimos não devolvidos.
+     */
+    public List<Pessoa> listPessoasComEmprestimos() {
+
+        return listPessoa(String.format("SELECT DISTINCT p.* FROM %s p " +
+                                        "INNER JOIN emprestimo e ON e.idpessoa = p.%s " +
+                                        "WHERE e.datadevolucao IS NULL", 
+                                        TABLE_NAME, COLUMN_ID));
     }
 
     /**

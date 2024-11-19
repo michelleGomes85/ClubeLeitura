@@ -8,11 +8,6 @@
 <head>
 	<meta charset="UTF-8">
 
-	<title>Clube da Leitura - Registro Caixa</title>
-
-	<!-- Link para o Favicon -->
-	<link rel="icon" href="${pageContext.request.contextPath}/img/favicon.png" type="image/x-icon">
-	
 	<!-- Incluindo a biblioteca de ícones do Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	

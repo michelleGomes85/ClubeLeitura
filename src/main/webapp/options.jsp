@@ -36,33 +36,29 @@
 	<!-- Grid de opções -->
 	<div class="grid">
 		
-		<a href="register_box.jsp" class="grid-item">
+		<a href="op_register_box.jsp" class="grid-item">
 			<i class="fas fa-box"></i> Cadastrar Caixa
 		</a>
 		
-		<a href="register_person.jsp" class="grid-item">
+		<a href="op_register_person.jsp" class="grid-item">
 			<i class="fas fa-user"></i> Cadastrar Pessoa
 		</a>
 		
-		<a href="register_magazine.jsp" class="grid-item">
+		<a href="op_register_magazine.jsp" class="grid-item">
 			<i class="fas fa-book"></i> Cadastrar Revista
 		</a>
 		
-		<a href="register_loan.jsp" class="grid-item">
+		<a href="op_register_loan.jsp" class="grid-item">
 			<i class="fas fa-hand-holding"></i> Realizar Empréstimo
 		</a>
 		
-		<div class="grid-item">
-			<i class="fas fa-undo"></i> Registrar Devolução
-		</div>
-		
-		<div class="grid-item">
+		<a href="op_list_borrowed_magazines.jsp" class="grid-item">
 			<i class="fas fa-book-reader"></i> Listar Revistas Emprestadas
-		</div>
+		</a>
 		
-		<div class="grid-item">
+		<a href="op_list_borrowed_magazines_late.jsp" class="grid-item">
 			<i class="fas fa-exclamation-triangle"></i> Listar Empréstimos em Atraso
-		</div>
+		</a>
 		
 		<div class="grid-item">
 			<i class="fas fa-search"></i> Listar Revistas de Pessoa Específica

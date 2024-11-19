@@ -176,4 +176,78 @@ public class RevistaDAO {
 
 		return null;
 	}
+	
+	/**
+	 * Lista revistas com base na disponibilidade.
+	 *
+	 * @param disponibilidade Disponibilidade das revistas (true para disponíveis, false para indisponíveis)
+	 * @return Lista de objetos Revista filtrados pela disponibilidade
+	 */
+	public List<Revista> listByDisponibilidade(boolean disponibilidade) {
+
+	    List<Revista> listRevistas = new ArrayList<>();
+
+	    String sql = String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, COLUMN_DISPONIBILIDADE);
+
+	    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+	        preparedStatement.setBoolean(1, disponibilidade);
+	        ResultSet resultSet = preparedStatement.executeQuery();
+
+	        while (resultSet.next()) {
+	            Revista revista = new Revista();
+	            revista.setIdRevista(resultSet.getLong(COLUMN_ID));
+	            revista.setColecao(resultSet.getString(COLUMN_COLECAO));
+	            revista.setNumeroEdicao(resultSet.getInt(COLUMN_NUMERO_EDICAO));
+	            revista.setAnoRevista(resultSet.getInt(COLUMN_ANO_REVISTA));
+	            revista.setDisponibilidade(resultSet.getBoolean(COLUMN_DISPONIBILIDADE));
+
+	            Caixa caixa = new Caixa();
+	            caixa.setIdCaixa(resultSet.getLong(COLUMN_CAIXA_ID));
+	            revista.setCaixa(caixa);
+
+	            listRevistas.add(revista);
+	        }
+	    } catch (SQLException e) {
+	        throw new RuntimeException(ERROR_LIST, e);
+	    }
+
+	    return listRevistas;
+	}
+	
+	/**
+	 * Lista revistas associadas a uma pessoa específica.
+	 *
+	 * @param idPessoa ID da pessoa cujas revistas serão buscadas
+	 * @return Lista de objetos Revista associados à pessoa
+	 */
+	public List<Revista> listByPessoa(long idPessoa) {
+
+	    List<Revista> listRevistas = new ArrayList<>();
+
+	    String sql = String.format("SELECT * FROM %s WHERE idpessoa = ?", TABLE_NAME);
+
+	    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+	        preparedStatement.setLong(1, idPessoa);
+	        ResultSet resultSet = preparedStatement.executeQuery();
+
+	        while (resultSet.next()) {
+	            Revista revista = new Revista();
+	            revista.setIdRevista(resultSet.getLong(COLUMN_ID));
+	            revista.setColecao(resultSet.getString(COLUMN_COLECAO));
+	            revista.setNumeroEdicao(resultSet.getInt(COLUMN_NUMERO_EDICAO));
+	            revista.setAnoRevista(resultSet.getInt(COLUMN_ANO_REVISTA));
+	            revista.setDisponibilidade(resultSet.getBoolean(COLUMN_DISPONIBILIDADE));
+
+	            Caixa caixa = new Caixa();
+	            caixa.setIdCaixa(resultSet.getLong(COLUMN_CAIXA_ID));
+	            revista.setCaixa(caixa);
+
+	            listRevistas.add(revista);
+	        }
+	    } catch (SQLException e) {
+	        throw new RuntimeException(ERROR_LIST, e);
+	    }
+
+	    return listRevistas;
+	}
 } // class RevistaDAO

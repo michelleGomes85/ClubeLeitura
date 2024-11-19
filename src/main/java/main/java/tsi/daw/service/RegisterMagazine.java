@@ -19,14 +19,14 @@ public class RegisterMagazine implements Service {
 	private static final String SUCCESS_MESSAGE_STR = "Revista colecao %s cadastrada com sucesso!";
 	private static final String MESSAGE_RETURN = "messageReturn";
 	
-	private static final String PAGE_BACK = "register_magazine.jsp";
+	private static final String PAGE_BACK = "op_register_magazine.jsp";
 	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
 		String colection = request.getParameter(PARAMETER_COLECTION);
-		String edition_number = request.getParameter(PARAMETER_EDITION_NUMBER);
+		String editionNumber = request.getParameter(PARAMETER_EDITION_NUMBER);
 		String year = request.getParameter(PARAMETER_YEAR);
 		String box = request.getParameter(PARAMETER_BOX);
 		
@@ -34,7 +34,7 @@ public class RegisterMagazine implements Service {
 		Revista revista = new Revista();
 		
 		revista.setColecao(colection);
-		revista.setNumeroEdicao(Integer.valueOf(edition_number));
+		revista.setNumeroEdicao(Integer.valueOf(editionNumber));
 		revista.setAnoRevista(Integer.valueOf(year));
 		
 		Caixa caixa = new Caixa();
@@ -44,9 +44,9 @@ public class RegisterMagazine implements Service {
 		
 		try {
 			revistaDAO.insert(revista);
-			request.setAttribute(MESSAGE_RETURN, String.format(SUCCESS_MESSAGE_STR, colection));
-		} catch (RuntimeException e) {
-			request.setAttribute(MESSAGE_RETURN, e);
+			request.setAttribute(MESSAGE_RETURN, String.format(SUCCESS_MESSAGE_STR, colection));		
+			} catch (RuntimeException e) {
+				request.setAttribute(MESSAGE_RETURN, e);
 		}
 		
 		return PAGE_BACK;

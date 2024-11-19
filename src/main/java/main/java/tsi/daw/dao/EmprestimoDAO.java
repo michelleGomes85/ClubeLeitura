@@ -1,12 +1,14 @@
 package main.java.tsi.daw.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import main.java.tsi.daw.bd.ConnectionFactory;
 import main.java.tsi.daw.model.Emprestimo;
@@ -29,6 +31,7 @@ public class EmprestimoDAO {
     private static final String ERROR_FIND_BY_ID = "Erro ao buscar empréstimo pelo ID no banco de dados";
     
     private static final String TABLE_NAME = "emprestimo";
+    private static final String TABLE_NAME_REVISTA = "revista";
     private static final String COLUMN_ID = "idemprestimo";
     private static final String COLUMN_PESSOA_ID = "idpessoa";
     private static final String COLUMN_REVISTA_ID = "idrevista";
@@ -115,11 +118,9 @@ public class EmprestimoDAO {
      *
      * @return Lista de objetos Emprestimo
      */
-    public List<Emprestimo> list() {
+    public List<Emprestimo> listEmprestimo(String sql) {
     	
         List<Emprestimo> listEmprestimos = new ArrayList<>();
-        
-        String sql = String.format("SELECT * FROM %s", TABLE_NAME);
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -148,6 +149,82 @@ public class EmprestimoDAO {
         
         return listEmprestimos;
     }
+    
+    public List<Emprestimo> list() {
+    	return listEmprestimo(String.format("SELECT * FROM %s", TABLE_NAME));
+    }
+    
+    public Map<Long, Revista> listRevistaEmprestimo() {
+    	
+    	String sql = String.format("SELECT e.idemprestimo, "
+                + "r.idrevista, r.colecao, r.num_edicao, r.ano_revista, r.disponibilidade "
+                + "FROM %s e "
+                + "INNER JOIN %s r ON e.idRevista = r.idRevista "
+                + "WHERE r.disponibilidade = false AND e.datadevolucao IS NULL", TABLE_NAME, TABLE_NAME_REVISTA);
+    	
+    	 Map<Long, Revista> emprestimoRevistaMap = new HashMap<>();
+    	 
+    	 try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+    		 
+    		 ResultSet resultSet = preparedStatement.executeQuery();
+    		 
+    		 while (resultSet.next()) {
+    			 
+    			Long idEmprestimo = resultSet.getLong("idemprestimo");
+    			
+	            Revista revista = new Revista();
+	            revista.setIdRevista(resultSet.getLong("idrevista"));
+	            revista.setColecao(resultSet.getString("colecao"));
+	            revista.setNumeroEdicao(resultSet.getInt("num_edicao"));
+	            revista.setAnoRevista(resultSet.getInt("ano_revista"));
+	            revista.setDisponibilidade(resultSet.getBoolean("disponibilidade"));
+	            
+	            emprestimoRevistaMap.put(idEmprestimo, revista);
+    		 }
+    		 
+    	 } catch (SQLException e) {
+             throw new RuntimeException(ERROR_LIST, e);
+         }
+    	 
+    	 return emprestimoRevistaMap;
+    }
+    
+    public Map<Long, Revista> listRevistaEmprestimoAtrasado() {
+    	
+    	String sql = String.format("SELECT e.idemprestimo, "
+    	        + "r.idrevista, r.colecao, r.num_edicao, r.ano_revista, r.disponibilidade "
+    	        + "FROM %s e "
+    	        + "INNER JOIN %s r ON e.idRevista = r.idRevista "
+    	        + "WHERE r.disponibilidade = false "
+    	        + "AND e.datadevolucao IS NULL "
+    	        + "AND e.dataemprestimo + INTERVAL '10 days' < CURRENT_DATE", TABLE_NAME, TABLE_NAME_REVISTA);
+    	
+    	 Map<Long, Revista> emprestimoRevistaMap = new HashMap<>();
+    	 
+    	 try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+    		 
+    		 ResultSet resultSet = preparedStatement.executeQuery();
+    		 
+    		 while (resultSet.next()) {
+    			 
+    			Long idEmprestimo = resultSet.getLong("idemprestimo");
+    			
+	            Revista revista = new Revista();
+	            revista.setIdRevista(resultSet.getLong("idrevista"));
+	            revista.setColecao(resultSet.getString("colecao"));
+	            revista.setNumeroEdicao(resultSet.getInt("num_edicao"));
+	            revista.setAnoRevista(resultSet.getInt("ano_revista"));
+	            revista.setDisponibilidade(resultSet.getBoolean("disponibilidade"));
+	            
+	            emprestimoRevistaMap.put(idEmprestimo, revista);
+    		 }
+    		 
+    	 } catch (SQLException e) {
+             throw new RuntimeException(ERROR_LIST, e);
+         }
+    	 
+    	 return emprestimoRevistaMap;
+    }
 
     /**
      * Busca um empréstimo pelo seu ID.
@@ -160,7 +237,9 @@ public class EmprestimoDAO {
         String sql = String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, COLUMN_ID);
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setLong(1, id);
+            
+        	preparedStatement.setLong(1, id);
+        	
             ResultSet resultSet = preparedStatement.executeQuery();
             
             if (resultSet.next()) {
@@ -178,7 +257,11 @@ public class EmprestimoDAO {
                 
                 emprestimo.setRevista(revista);
                 emprestimo.setDataEmprestimo(resultSet.getDate(COLUMN_DATA_EMPRESTIMO).toLocalDate());
-                emprestimo.setDataDevolucao(resultSet.getDate(COLUMN_DATA_DEVOLUCAO).toLocalDate());
+                
+                Date dateReturn = resultSet.getDate(COLUMN_DATA_DEVOLUCAO);
+                
+                if (dateReturn != null)
+                	emprestimo.setDataDevolucao(dateReturn.toLocalDate());
             	
                 return emprestimo;
             }

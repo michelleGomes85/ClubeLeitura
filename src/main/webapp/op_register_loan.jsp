@@ -39,7 +39,7 @@
 			List<Pessoa> pessoas = new ArrayList<>();
 			try {
 				PessoaDAO pessoaDAO = new PessoaDAO();
-				pessoas = pessoaDAO.list();
+				pessoas = pessoaDAO.listPessoasSemEmprestimos();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -49,7 +49,7 @@
 			List<Revista> revistas = new ArrayList<>();
 			try {
 				RevistaDAO revistaDAO = new RevistaDAO();
-				revistas = revistaDAO.list();
+				revistas = revistaDAO.listByDisponibilidade(true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -15,7 +15,7 @@ public class RegisterPerson implements Service {
 	private static final String SUCCESS_MESSAGE_STR = "Pessoa %s cadastrada com sucesso!";
 	private static final String MESSAGE_RETURN = "messageReturn";
 	
-	private static final String PAGE_BACK = "register_person.jsp";
+	private static final String PAGE_BACK = "op_register_person.jsp";
 	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
