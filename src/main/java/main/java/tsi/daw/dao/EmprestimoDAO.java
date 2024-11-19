@@ -47,9 +47,8 @@ public class EmprestimoDAO {
      * @param emprestimo Objeto Emprestimo a ser inserido no banco de dados
      */
     public void insert(Emprestimo emprestimo) {
-    	
+        
         String sql = String.format("INSERT INTO %s (%s, %s, %s, %s) VALUES (?, ?, ?, ?)", 
-        		
                                    TABLE_NAME, COLUMN_PESSOA_ID, COLUMN_REVISTA_ID, 
                                    COLUMN_DATA_EMPRESTIMO, COLUMN_DATA_DEVOLUCAO);
         
@@ -57,12 +56,19 @@ public class EmprestimoDAO {
             preparedStatement.setLong(1, emprestimo.getPessoa().getIdPessoa());
             preparedStatement.setLong(2, emprestimo.getRevista().getIdRevista());
             preparedStatement.setDate(3, Date.valueOf(emprestimo.getDataEmprestimo()));
-            preparedStatement.setDate(4, Date.valueOf(emprestimo.getDataDevolucao()));
+            
+            if (emprestimo.getDataDevolucao() != null) {
+                preparedStatement.setDate(4, Date.valueOf(emprestimo.getDataDevolucao()));
+            } else {
+                preparedStatement.setNull(4, java.sql.Types.DATE);
+            }
+            
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(ERROR_INSERT, e);
         }
     }
+
     
     /**
      * Atualiza um empréstimo existente no banco de dados.

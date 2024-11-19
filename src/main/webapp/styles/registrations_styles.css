@@ -11,8 +11,8 @@
     max-height: 700px;
     overflow-y: auto;
     color: #fff; 
-    position: relative; /* Ajusta o posicionamento dentro da tela */
-    z-index: 10; /* Garante que o formulário esteja acima de outros elementos */
+    position: relative; 
+    z-index: 10; 
 }
 
 .register-form h1 {
@@ -150,6 +150,10 @@ label {
     font-weight: bold;
     margin-bottom: 8px;
     display: block;
+}
+
+.error-message {
+	font-size: 1.2rem;
 }
 
 @media (max-width: 768px) {

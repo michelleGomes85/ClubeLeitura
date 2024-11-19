@@ -48,9 +48,9 @@
 			<i class="fas fa-book"></i> Cadastrar Revista
 		</a>
 		
-		<div class="grid-item">
-			<i class="fas fa-hand-holding"></i> Cadastrar Empréstimo
-		</div>
+		<a href="register_loan.jsp" class="grid-item">
+			<i class="fas fa-hand-holding"></i> Realizar Empréstimo
+		</a>
 		
 		<div class="grid-item">
 			<i class="fas fa-undo"></i> Registrar Devolução

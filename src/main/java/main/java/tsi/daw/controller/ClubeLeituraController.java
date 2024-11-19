@@ -17,6 +17,9 @@ import main.java.tsi.daw.service.Service;
 public class ClubeLeituraController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    
+    private static final String PACKAGE_STRUCTURE = "main.java.tsi.daw.service.";
+    private static final String CONTROL_PARAMETER = "service";
 
     /**
      * Processa a requisição, carrega a classe lógica e executa o serviço.
@@ -31,10 +34,7 @@ public class ClubeLeituraController extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Obtém o nome da classe lógica a ser executada
-        String nameClass = "main.java.tsi.daw.service." + request.getParameter("service");
-        
-        request.removeAttribute("messageReturn");
+        String nameClass = PACKAGE_STRUCTURE + request.getParameter(CONTROL_PARAMETER);
         
         String url = "";
 
@@ -42,7 +42,6 @@ public class ClubeLeituraController extends HttpServlet {
             Class<?> classObj = Class.forName(nameClass);
             Service service = (Service) classObj.newInstance();
             url = service.execute(request, response);
-
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
             System.out.println("erro");

@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpSession;
 
 public class EfetuaLogout implements Service {
 
+	private static final String PAGE_LOGIN = "login.jsp";
+	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -16,7 +18,6 @@ public class EfetuaLogout implements Service {
 		HttpSession session = request.getSession(false);
 		session.invalidate();
 		
-		return "login.jsp";
+		return PAGE_LOGIN;
 	}
-
 }

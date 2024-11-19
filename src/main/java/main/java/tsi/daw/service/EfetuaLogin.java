@@ -16,6 +16,9 @@ public class EfetuaLogin implements Service {
 	
 	private static final String PARAMETER_ATTRIBUTE_STATUS = "status";
 	private static final String PARAMETER_ATTRIBUTE_NAME = "nome";
+	
+	private static final String PAGE_LOGIN = "login.jsp";
+	private static final String PAGE_MAIN = "home_page.jsp";
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
@@ -24,7 +27,7 @@ public class EfetuaLogin implements Service {
 		String login = request.getParameter(PARAMETER_LOGIN);
 		String senha = request.getParameter(PARAMETER_SENHA);
 		
-		String url = "login.jsp";
+		String url = PAGE_LOGIN;
 		
 		UsuarioDAO userDao = new UsuarioDAO();
 		Usuario user = userDao.validateCredential(login, senha);
@@ -37,7 +40,7 @@ public class EfetuaLogin implements Service {
 			session.setAttribute(PARAMETER_ATTRIBUTE_STATUS, true);
 			session.setAttribute(PARAMETER_ATTRIBUTE_NAME, login);
 			
-			url = "home_page.jsp";
+			url = PAGE_MAIN;
 		}
 		
 		return url;

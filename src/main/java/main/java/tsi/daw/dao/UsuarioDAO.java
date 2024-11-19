@@ -18,6 +18,7 @@ import main.java.tsi.daw.model.Usuario;
  * Delete) na tabela de usuarios do banco de dados
  */
 public class UsuarioDAO {
+	
 	private static final String ERROR_INSERT = "Erro ao inserir um usuário no banco de dados";
     private static final String ERROR_UPDATE = "Erro ao atualizar um usuário no banco de dados";
     private static final String ERROR_DELETE = "Erro ao deletar um usuário no banco de dados";

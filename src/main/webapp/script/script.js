@@ -53,10 +53,10 @@ function formatYear() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    
-	var yearInput = document.getElementById("ano-revista");
-	
-	yearInput.addEventListener("input", formatYear);
 	
 	showModal();
+	
+	let yearInput = document.getElementById("ano-revista");
+	if (yearInput)
+		yearInput.addEventListener("input", formatYear);
 });

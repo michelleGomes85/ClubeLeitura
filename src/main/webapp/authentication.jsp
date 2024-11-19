@@ -5,8 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title></title>
+	<meta charset="UTF-8">
+	<title>Clube da Leitura</title>
+	
+	<!-- Link para o Favicon -->
+	<link rel="icon" href="${pageContext.request.contextPath}/img/favicon.png" type="image/x-icon">
 </head>
 <body>
 	<c:if test="${sessionScope.status != true }">
