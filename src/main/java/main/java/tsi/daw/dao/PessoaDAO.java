@@ -144,21 +144,6 @@ public class PessoaDAO {
 						    	        ")", 
     	        TABLE_NAME, COLUMN_ID));
     }
-    
-    /**
-     * Lista todas as pessoas que possuem empréstimos pendentes.
-     * 
-     * Apenas retorna pessoas com registros na tabela de empréstimos onde a data de devolução é NULL.
-     *
-     * @return Lista de objetos Pessoa que possuem empréstimos não devolvidos.
-     */
-    public List<Pessoa> listPessoasComEmprestimos() {
-
-        return listPessoa(String.format("SELECT DISTINCT p.* FROM %s p " +
-                                        "INNER JOIN emprestimo e ON e.idpessoa = p.%s " +
-                                        "WHERE e.datadevolucao IS NULL", 
-                                        TABLE_NAME, COLUMN_ID));
-    }
 
     /**
      * Busca uma pessoa pelo seu ID.

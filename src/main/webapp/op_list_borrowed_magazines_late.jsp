@@ -48,7 +48,7 @@
 			<c:choose>
 				<%-- Mensagem para lista vazia --%>
 				<c:when test="${empty emprestimoRevistas}">
-					<p class=".error-message">Não há nenhuma revista atrasada no momento.</p>
+					<p class="error-message">Não há nenhuma revista atrasada no momento.</p>
 				</c:when>
 
 				<%-- Tabela com os dados --%>
@@ -79,16 +79,6 @@
 
 		</div>
     </main>
-
-    <c:if test="${not empty messageReturn}">
-        <div id="messageModal" class="modal">
-            <div class="modal-content">
-                <h2>Mensagem Informativa</h2>
-                <p><c:out value="${messageReturn}" /></p>
-                <button onclick="closeModal()" class="btn-submit">Fechar</button>
-            </div>
-        </div>
-    </c:if>
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/script/script.js"></script>
 	

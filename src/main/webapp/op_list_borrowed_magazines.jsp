@@ -5,7 +5,7 @@
 <%@page import="main.java.tsi.daw.dao.RevistaDAO"%>
 <%@page import="main.java.tsi.daw.model.Revista"%>
 <%@page import="java.util.List"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -48,7 +48,7 @@
 			<c:choose>
 				<%-- Mensagem para lista vazia --%>
 				<c:when test="${empty emprestimoRevistas}">
-					<p class=".error-message">Não há nenhuma revista emprestada no momento.</p>
+					<p class="error-message">Não há nenhuma revista emprestada no momento.</p>
 				</c:when>
 
 				<%-- Tabela com os dados --%>

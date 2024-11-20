@@ -221,33 +221,32 @@ public class RevistaDAO {
 	 * @return Lista de objetos Revista associados à pessoa
 	 */
 	public List<Revista> listByPessoa(long idPessoa) {
+		
+	    String sql = "SELECT r.idrevista, r.colecao, r.num_edicao, r.ano_revista, r.disponibilidade "
+	               + "FROM emprestimo e "
+	               + "INNER JOIN revista r ON e.idRevista = r.idRevista "
+	               + "WHERE e.idPessoa = ? AND e.datadevolucao IS NULL";
 
-	    List<Revista> listRevistas = new ArrayList<>();
-
-	    String sql = String.format("SELECT * FROM %s WHERE idpessoa = ?", TABLE_NAME);
+	    List<Revista> revistas = new ArrayList<>();
 
 	    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 	        preparedStatement.setLong(1, idPessoa);
+
 	        ResultSet resultSet = preparedStatement.executeQuery();
 
 	        while (resultSet.next()) {
 	            Revista revista = new Revista();
-	            revista.setIdRevista(resultSet.getLong(COLUMN_ID));
-	            revista.setColecao(resultSet.getString(COLUMN_COLECAO));
-	            revista.setNumeroEdicao(resultSet.getInt(COLUMN_NUMERO_EDICAO));
-	            revista.setAnoRevista(resultSet.getInt(COLUMN_ANO_REVISTA));
-	            revista.setDisponibilidade(resultSet.getBoolean(COLUMN_DISPONIBILIDADE));
-
-	            Caixa caixa = new Caixa();
-	            caixa.setIdCaixa(resultSet.getLong(COLUMN_CAIXA_ID));
-	            revista.setCaixa(caixa);
-
-	            listRevistas.add(revista);
+	            revista.setIdRevista(resultSet.getLong("idrevista"));
+	            revista.setColecao(resultSet.getString("colecao"));
+	            revista.setNumeroEdicao(resultSet.getInt("num_edicao"));
+	            revista.setAnoRevista(resultSet.getInt("ano_revista"));
+	            revista.setDisponibilidade(resultSet.getBoolean("disponibilidade"));
+	            revistas.add(revista);
 	        }
 	    } catch (SQLException e) {
-	        throw new RuntimeException(ERROR_LIST, e);
+	        throw new RuntimeException("Erro ao listar revistas por pessoa", e);
 	    }
 
-	    return listRevistas;
+	    return revistas;
 	}
 } // class RevistaDAO

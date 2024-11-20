@@ -60,9 +60,9 @@
 			<i class="fas fa-exclamation-triangle"></i> Listar Empréstimos em Atraso
 		</a>
 		
-		<div class="grid-item">
+		<a href="op_list_loan_person.jsp" class="grid-item">
 			<i class="fas fa-search"></i> Listar Revistas de Pessoa Específica
-		</div>
+		</a>
 	</div> <!--grid -->
 </body>
 </html>
