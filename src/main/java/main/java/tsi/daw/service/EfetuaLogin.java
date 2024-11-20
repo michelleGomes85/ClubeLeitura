@@ -19,6 +19,9 @@ public class EfetuaLogin implements Service {
 	
 	private static final String PAGE_LOGIN = "login.jsp";
 	private static final String PAGE_MAIN = "home_page.jsp";
+	
+	private static final String MESSAGE_RETURN = "messageReturn";
+	private static final String ERROR_USER = "Senha ou usuário incorreto";
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
@@ -41,7 +44,8 @@ public class EfetuaLogin implements Service {
 			session.setAttribute(PARAMETER_ATTRIBUTE_NAME, login);
 			
 			url = PAGE_MAIN;
-		}
+		} else 
+			request.setAttribute(MESSAGE_RETURN, ERROR_USER); 
 		
 		return url;
 	}

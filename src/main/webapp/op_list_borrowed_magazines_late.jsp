@@ -84,8 +84,6 @@
 					</table>
 				</c:otherwise>
 			</c:choose>
-
-
 		</div>
     </main>
 

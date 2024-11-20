@@ -16,7 +16,9 @@ public class EfetuaLogout implements Service {
 			throws ServletException, IOException {
 		
 		HttpSession session = request.getSession(false);
-		session.invalidate();
+		
+		if (session != null)
+			session.invalidate();
 		
 		return PAGE_LOGIN;
 	}

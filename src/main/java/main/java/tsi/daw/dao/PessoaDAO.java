@@ -188,14 +188,17 @@ public class PessoaDAO {
         
     	String sql = String.format(
             """
-            SELECT * FROM %s p  
+            SELECT * FROM %s  
             WHERE NOT EXISTS (
-                SELECT 1 FROM emprestimo e
-                WHERE e.idpessoa = p.%s AND e.datadevolucao IS NULL
+                SELECT 1 FROM %s
+                WHERE %s.%s = %s.%s AND %s.%s IS NULL
             )
             """,
             DataBaseSchema.PESSOA.getTableName(), 
-            DataBaseSchema.PESSOA.getColumns()[0] 
+            DataBaseSchema.EMPRESTIMO.getTableName(),
+            DataBaseSchema.EMPRESTIMO.getTableName(), DataBaseSchema.EMPRESTIMO.getColumns()[1],
+            DataBaseSchema.PESSOA.getTableName(), DataBaseSchema.PESSOA.getColumns()[0],
+            DataBaseSchema.EMPRESTIMO.getTableName(), DataBaseSchema.EMPRESTIMO.getColumns()[4]
         );
 
         return listAux(sql);
