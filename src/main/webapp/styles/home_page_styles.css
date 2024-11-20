@@ -150,7 +150,143 @@ button:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
 }
 
-/* Media Queries para Responsividade */
+.floating-button {
+    position: fixed;
+    bottom: 50px;
+    right: 50px; 
+    width: 60px;
+    height: 60px;
+    background-color: #007bff;
+    color: white; 
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000; 
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.floating-button:hover {
+    background-color: #0056b3; 
+    transform: scale(1.1); 
+}
+
+.floating-button:focus {
+    outline: none;
+}
+
+.modal {
+    display: none;
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    background-color: #000;
+    margin: 7% auto; 
+    padding: 40px;
+    border: 1px solid #FFF; 
+    width: 85%; 
+    max-width: 900px; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 10px; 
+    text-align: justify;
+    color: #e0f2fe;
+    font-family: Arial, sans-serif;
+}
+
+.modal-content h2, .modal-content h3 {
+    color: #38bdf8;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-size: 2rem; 
+}
+
+.modal-content ul {
+    list-style: none; 
+    padding: 0;
+    margin: 10px 0;
+}
+
+.modal-content ul li {
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+}
+
+.modal-content ul li:before {
+    content: "•"; 
+    color: #60a5fa;
+    font-size: 1.5rem;
+}
+
+.modal-content a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.modal-content a:hover {
+    color: #0284c7; 
+}
+
+.modal-content a i {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-top: 10px;
+}
+
+.modal-content a i.fa-linkedin,
+.modal-content a i.fa-github  {
+	margin-left: 20px;
+}
+
+.close {
+    color: #93c5fd;
+    float: right;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #60a5fa;
+}
+
+@media (max-width: 768px) {
+	
+    .modal-content {
+        width: 95%; 
+        margin: 10% auto;
+        padding: 20px;
+    }
+
+    .modal-content h2, .modal-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .modal-content ul li {
+        font-size: 1rem;
+    }
+}
+
+
 @media (max-width: 1200px) {
     .navbar-container {
         padding: 0 15px;

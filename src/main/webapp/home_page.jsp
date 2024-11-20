@@ -38,5 +38,45 @@
         <p>Aplicação criada para organizar e compartilhar uma coleção de revistas em quadrinhos entre amigos. Ela permite o cadastro das revistas e o controle dos empréstimos, garantindo que nenhuma revista se perca.</p>
         <button onclick="window.location.href='options.jsp'">Entrar nas Opções</button>
     </div>
+    
+    <button class="floating-button" title="Sobre mim">
+	    <i class="fas fa-info"></i>
+	</button>
+
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<h2>Sobre o Desenvolvedor</h2>
+			<ul>
+				<li>Este sistema foi criado por <strong>Michelle Cristina Gomes</strong></li>
+				<li>Data de criação: <strong>20/11/2024</strong></li>
+			</ul>
+
+			<h3>Tecnologias Utilizadas</h3>
+			<ul>
+				<li>Java com Servlet</li>
+				<li>JSP (Java Server Pages)</li>
+				<li>HTML, CSS e JavaScript</li>
+				<li>PostgreSQL</li>
+			</ul>
+
+			<h3>Funcionalidades</h3>
+			<ul>
+				<li>Cadastro de revistas, usuários e caixas</li>
+				<li>Controle de empréstimos e devoluções</li>
+				<li>Relatórios de revistas emprestadas e atrasadas</li>
+				<li>Interface amigável e responsiva</li>
+			</ul>
+
+			<h3>Contato</h3>
+			<p class="contact">
+				<a href="https://mail.google.com/mail/?view=cm&fs=1&to=gmichele498@gmail.com&su=Contato pelo GitHub&body=Olá%20Tudo%20Bem!" target="_blank"><i class="fas fa-envelope"></i></a> 
+				<a href="https://www.linkedin.com/in/michelleGomes85/" target="_blank"><i class="fab fa-linkedin"></i></a>
+				<a href="https://github.com/michelleGomes85" target="_blank"	class="github-link"> <i class="fab fa-github"></i></a>
+			</p>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="script/script.js"></script>
 </body>
 </html>
