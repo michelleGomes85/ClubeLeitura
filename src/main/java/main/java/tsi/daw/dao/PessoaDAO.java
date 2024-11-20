@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.tsi.daw.bd.ConnectionFactory;
+import main.java.tsi.daw.bd.DataBaseSchema;
 import main.java.tsi.daw.model.Pessoa;
 
 /**
@@ -25,11 +26,6 @@ public class PessoaDAO {
     private static final String ERROR_LIST = "Erro ao listar as pessoas do banco de dados";
     private static final String ERROR_FIND_BY_ID = "Erro ao buscar uma pessoa pelo ID no banco de dados";
     
-    private static final String TABLE_NAME = "pessoa";
-    private static final String COLUMN_ID = "idpessoa";
-    private static final String COLUMN_NOME = "nome";
-    private static final String COLUMN_TELEFONE = "telefone";
-    
     private Connection connection;
     
     public PessoaDAO() {
@@ -43,14 +39,18 @@ public class PessoaDAO {
      */
     public void insert(Pessoa pessoa) {
     	
-        String sql = String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)", TABLE_NAME, COLUMN_NOME, COLUMN_TELEFONE);
+        String sql = 
+        		String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)", 
+        		DataBaseSchema.PESSOA.getTableName(),
+        		DataBaseSchema.PESSOA.getColumns()[1],
+        		DataBaseSchema.PESSOA.getColumns()[2]);
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, pessoa.getNome());
             preparedStatement.setString(2, pessoa.getTelefone());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(ERROR_INSERT, e);
+            throw new RuntimeException(ERROR_INSERT);
         }
     }
     
@@ -61,7 +61,12 @@ public class PessoaDAO {
      */
     public void update(Pessoa pessoa) {
     	
-        String sql = String.format("UPDATE %s SET %s = ?, %s = ? WHERE %s = ?", TABLE_NAME, COLUMN_NOME, COLUMN_TELEFONE, COLUMN_ID);
+        String sql = 
+        		String.format("UPDATE %s SET %s = ?, %s = ? WHERE %s = ?", 
+				DataBaseSchema.PESSOA.getTableName(),
+        		DataBaseSchema.PESSOA.getColumns()[1],
+        		DataBaseSchema.PESSOA.getColumns()[2],
+        		DataBaseSchema.PESSOA.getColumns()[0]);
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, pessoa.getNome());
@@ -69,7 +74,7 @@ public class PessoaDAO {
             preparedStatement.setLong(3, pessoa.getIdPessoa());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(ERROR_UPDATE, e);
+            throw new RuntimeException(ERROR_UPDATE);
         }
     }
     
@@ -80,14 +85,61 @@ public class PessoaDAO {
      */
     public void delete(Pessoa pessoa) {
     	
-        String sql = String.format("DELETE FROM %s WHERE %s = ?", TABLE_NAME, COLUMN_ID);
+        String sql = 
+        		String.format("DELETE FROM %s WHERE %s = ?", 
+        		DataBaseSchema.PESSOA.getTableName(),
+        		DataBaseSchema.PESSOA.getColumns()[0]);
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, pessoa.getIdPessoa());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(ERROR_DELETE, e);
+            throw new RuntimeException(ERROR_DELETE);
         }
+    }
+    
+    /**
+	 * Metódo auxiliar que transforma um resultSet de consulta em um objeto Pessoa
+	 * 
+	 * @param resultSet
+	 * @return
+	 * @throws SQLException
+	 */
+	private Pessoa mapResultSetToPessoa(ResultSet resultSet) throws SQLException {
+		Pessoa pessoa = new Pessoa();
+        pessoa.setIdPessoa(resultSet.getLong(DataBaseSchema.PESSOA.getColumns()[0]));
+        pessoa.setNome(resultSet.getString(DataBaseSchema.PESSOA.getColumns()[1]));
+        pessoa.setTelefone(resultSet.getString(DataBaseSchema.PESSOA.getColumns()[2]));
+        
+        return pessoa;
+	}
+	
+    /**
+     * Busca uma pessoa pelo seu ID.
+     *
+     * @param id ID da Pessoa a ser encontrada
+     * @return Objeto Pessoa correspondente ao ID, ou null se não encontrado
+     */
+    public Pessoa findById(long id) {
+    	
+        String sql = 
+        		String.format("SELECT * FROM %s WHERE %s = ?", 
+        		DataBaseSchema.PESSOA.getTableName());
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        	
+            preparedStatement.setLong(1, id);
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if (resultSet.next()) 
+            	return mapResultSetToPessoa(resultSet);
+            
+        } catch (SQLException e) {
+            throw new RuntimeException(ERROR_FIND_BY_ID);
+        }
+        
+        return null; 
     }
     
     /**
@@ -96,7 +148,7 @@ public class PessoaDAO {
      * @param sql A consulta SQL a ser executada.
      * @return Lista de objetos Pessoa correspondente à consulta SQL.
      */
-    private List<Pessoa> listPessoa(String sql) {
+    private List<Pessoa> listAux(String sql) {
     	
     	List<Pessoa> listPessoas = new ArrayList<>();
         
@@ -104,16 +156,11 @@ public class PessoaDAO {
         	
             ResultSet resultSet = preparedStatement.executeQuery();
             
-            while (resultSet.next()) {
-                Pessoa pessoa = new Pessoa();
-                pessoa.setIdPessoa(resultSet.getLong(COLUMN_ID));
-                pessoa.setNome(resultSet.getString(COLUMN_NOME));
-                pessoa.setTelefone(resultSet.getString(COLUMN_TELEFONE));
-                listPessoas.add(pessoa);
-            }
+            while (resultSet.next())
+                listPessoas.add(mapResultSetToPessoa(resultSet));
             
         } catch (SQLException e) {
-            throw new RuntimeException(ERROR_LIST, e);
+            throw new RuntimeException(ERROR_LIST);
         }
         
         return listPessoas;
@@ -125,7 +172,9 @@ public class PessoaDAO {
      * @return Lista de objetos Pessoa
      */
     public List<Pessoa> list() {
-    	return listPessoa(String.format("SELECT * FROM %s", TABLE_NAME));
+    	return listAux(
+    			String.format("SELECT * FROM %s", 
+    		    DataBaseSchema.PESSOA.getTableName()));
     }
     
     /**
@@ -135,45 +184,21 @@ public class PessoaDAO {
      *
      * @return Lista de objetos Pessoa sem empréstimos pendentes.
      */
-    public List<Pessoa> listPessoasSemEmprestimos() {
+    public List<Pessoa> listWithoutLoans() {
+        
+    	String sql = String.format(
+            """
+            SELECT * FROM %s p  
+            WHERE NOT EXISTS (
+                SELECT 1 FROM emprestimo e
+                WHERE e.idpessoa = p.%s AND e.datadevolucao IS NULL
+            )
+            """,
+            DataBaseSchema.PESSOA.getTableName(), 
+            DataBaseSchema.PESSOA.getColumns()[0] 
+        );
 
-    	return listPessoa(String.format("SELECT * FROM %s p " +
-						    	        "WHERE NOT EXISTS (" +
-						    	        "    SELECT 1 FROM emprestimo e " +
-						    	        "    WHERE e.idpessoa = p.%s AND e.datadevolucao IS NULL" +
-						    	        ")", 
-    	        TABLE_NAME, COLUMN_ID));
+        return listAux(sql);
     }
 
-    /**
-     * Busca uma pessoa pelo seu ID.
-     *
-     * @param id ID da Pessoa a ser encontrada
-     * @return Objeto Pessoa correspondente ao ID, ou null se não encontrado
-     */
-    public Pessoa findById(long id) {
-    	
-        String sql = String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, COLUMN_ID);
-        
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-        	
-            preparedStatement.setLong(1, id);
-            
-            ResultSet resultSet = preparedStatement.executeQuery();
-            
-            if (resultSet.next()) {
-            	Pessoa pessoa = new Pessoa();
-                pessoa.setIdPessoa(resultSet.getLong(COLUMN_ID));
-                pessoa.setNome(resultSet.getString(COLUMN_NOME));
-                pessoa.setTelefone(resultSet.getString(COLUMN_TELEFONE));
-                
-                return pessoa;
-            }
-            
-        } catch (SQLException e) {
-            throw new RuntimeException(ERROR_FIND_BY_ID, e);
-        }
-        
-        return null; 
-    }
 } // class PessoaDAO

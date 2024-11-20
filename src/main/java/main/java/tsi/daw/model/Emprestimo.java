@@ -1,14 +1,14 @@
 package main.java.tsi.daw.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class Emprestimo {
 	
 	private Long idEmprestimo;
 	private Pessoa pessoa;
 	private Revista revista;
-	private LocalDate dataEmprestimo;
-	private LocalDate dataDevolucao;
+	private Date dataEmprestimo;
+	private Date dataDevolucao;
 	
 	public Emprestimo() {}
 
@@ -36,19 +36,19 @@ public class Emprestimo {
 		this.revista = revista;
 	}
 
-	public LocalDate getDataEmprestimo() {
+	public Date getDataEmprestimo() {
 		return dataEmprestimo;
 	}
 
-	public void setDataEmprestimo(LocalDate dataEmprestimo) {
+	public void setDataEmprestimo(Date dataEmprestimo) {
 		this.dataEmprestimo = dataEmprestimo;
 	}
 
-	public LocalDate getDataDevolucao() {
+	public Date getDataDevolucao() {
 		return dataDevolucao;
 	}
 
-	public void setDataDevolucao(LocalDate dataDevolucao) {
+	public void setDataDevolucao(Date dataDevolucao) {
 		this.dataDevolucao = dataDevolucao;
 	}
 }

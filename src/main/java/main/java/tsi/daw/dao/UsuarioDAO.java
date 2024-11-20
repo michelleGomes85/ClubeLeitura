@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.tsi.daw.bd.ConnectionFactory;
+import main.java.tsi.daw.bd.DataBaseSchema;
 import main.java.tsi.daw.model.Usuario;
 
 /**
@@ -26,11 +27,6 @@ public class UsuarioDAO {
     private static final String ERROR_FIND_BY_ID = "Erro ao buscar um usuário pelo ID no banco de dados";
     private static final String ERROR_INVALID_USER = "Erro usuário invalido";
     
-    private static final String TABLE_NAME = "usuario";
-    private static final String COLUMN_ID = "idusuario";
-    private static final String COLUMN_USUARIO = "usuario";
-    private static final String COLUMN_SENHA = "senha";
-    
     private Connection connection;
     
     public UsuarioDAO() {
@@ -44,14 +40,18 @@ public class UsuarioDAO {
      */
     public void insert(Usuario usuario) {
     	
-        String sql = String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)", TABLE_NAME, COLUMN_USUARIO, COLUMN_SENHA);
+        String sql = 
+        		String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)", 
+        		DataBaseSchema.USUARIO.getTableName(), 
+        		DataBaseSchema.USUARIO.getColumns()[1],
+        		DataBaseSchema.USUARIO.getColumns()[2]);
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, usuario.getUsuario());
             preparedStatement.setString(2, usuario.getSenha());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(ERROR_INSERT, e);
+            throw new RuntimeException(ERROR_INSERT);
         }
     }
     
@@ -62,7 +62,12 @@ public class UsuarioDAO {
      */
     public void update(Usuario usuario) {
     	
-        String sql = String.format("UPDATE %s SET %s = ?, SET %s = ? WHERE %s = ?", TABLE_NAME, COLUMN_USUARIO, COLUMN_SENHA, COLUMN_ID);
+        String sql = 
+        		String.format("UPDATE %s SET %s = ?, SET %s = ? WHERE %s = ?", 
+				DataBaseSchema.USUARIO.getTableName(), 
+        		DataBaseSchema.USUARIO.getColumns()[1],
+        		DataBaseSchema.USUARIO.getColumns()[2],
+        		DataBaseSchema.USUARIO.getColumns()[0]);
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, usuario.getUsuario());
@@ -70,7 +75,7 @@ public class UsuarioDAO {
             preparedStatement.setLong(3, usuario.getIdUsuario());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(ERROR_UPDATE, e);
+            throw new RuntimeException(ERROR_UPDATE);
         }
     }
     
@@ -81,14 +86,61 @@ public class UsuarioDAO {
      */
     public void delete(Usuario usuario) {
     	
-        String sql = String.format("DELETE FROM %s WHERE %s = ?", TABLE_NAME, COLUMN_ID);
+        String sql = 
+        		String.format("DELETE FROM %s WHERE %s = ?", 
+				DataBaseSchema.USUARIO.getTableName(), 
+        		DataBaseSchema.USUARIO.getColumns()[0]);
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, usuario.getIdUsuario());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(ERROR_DELETE, e);
+            throw new RuntimeException(ERROR_DELETE);
         }
+    }
+    
+    /**
+	 * Metódo auxiliar que transforma um resultSet de consulta em um objeto Usuario
+	 * 
+	 * @param resultSet
+	 * @return
+	 * @throws SQLException
+	 */
+	private Usuario mapResultSetToUsuario(ResultSet resultSet) throws SQLException {
+		Usuario usuario = new Usuario();
+        usuario.setIdUsuario(resultSet.getLong(DataBaseSchema.USUARIO.getColumns()[0]));
+        usuario.setUsuario(resultSet.getString(DataBaseSchema.USUARIO.getColumns()[1]));
+        usuario.setSenha(resultSet.getString(DataBaseSchema.USUARIO.getColumns()[2]));
+        return usuario;
+	}
+    
+    /**
+     * Busca um usuario pelo seu ID.
+     *
+     * @param id ID do Usuario a ser encontrado
+     * @return Objeto Usuario correspondente ao ID, ou null se não encontrado
+     */
+    public Usuario findById(long id) {
+    	
+        String sql = 
+        		String.format("SELECT * FROM %s WHERE %s = ?", 
+        		DataBaseSchema.USUARIO.getTableName(), 
+        		DataBaseSchema.USUARIO.getColumns()[0]);
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        	
+            preparedStatement.setLong(1, id);
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if (resultSet.next())
+            	return mapResultSetToUsuario(resultSet);
+            
+        } catch (SQLException e) {
+            throw new RuntimeException(ERROR_FIND_BY_ID);
+        }
+        
+        return null; 
     }
     
     /**
@@ -100,74 +152,52 @@ public class UsuarioDAO {
     	
         List<Usuario> listUsuarios = new ArrayList<>();
         
-        String sql = String.format("SELECT * FROM %s", TABLE_NAME);
+        String sql = 
+        		String.format("SELECT * FROM %s", 
+        		DataBaseSchema.USUARIO.getTableName());
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
             
-            while (resultSet.next()) {
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(resultSet.getLong(COLUMN_ID));
-                usuario.setUsuario(resultSet.getString(COLUMN_USUARIO));
-                usuario.setSenha(resultSet.getString(COLUMN_SENHA));
-                
-                listUsuarios.add(usuario);
-            }
+        	ResultSet resultSet = preparedStatement.executeQuery();
+            
+            while (resultSet.next())
+                listUsuarios.add(mapResultSetToUsuario(resultSet));
             
         } catch (SQLException e) {
-            throw new RuntimeException(ERROR_LIST, e);
+            throw new RuntimeException(ERROR_LIST);
         }
         
         return listUsuarios;
     }
 
-    /**
-     * Busca um usuario pelo seu ID.
-     *
-     * @param id ID do Usuario a ser encontrado
-     * @return Objeto Usuario correspondente ao ID, ou null se não encontrado
-     */
-    public Usuario findById(long id) {
-    	
-        String sql = String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, COLUMN_ID);
-        
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-        	
-            preparedStatement.setLong(1, id);
-            
-            ResultSet resultSet = preparedStatement.executeQuery();
-            
-            if (resultSet.next()) {
-            	Usuario usuario = new Usuario();
-                usuario.setIdUsuario(resultSet.getLong(COLUMN_ID));
-                usuario.setUsuario(resultSet.getString(COLUMN_USUARIO));
-                usuario.setSenha(resultSet.getString(COLUMN_SENHA));
-                return usuario;
-            }
-            
-        } catch (SQLException e) {
-            throw new RuntimeException(ERROR_FIND_BY_ID, e);
-        }
-        
-        return null; 
-    }
-    
+	/**
+	 * Valida as credencias de login de um usuário no banco de dados.
+	 * 
+	 * @param login o nome de usuário informado pelo cliente
+	 * @param senha a senha associada ao nome de usuário
+	 * @return um objeto {@link Usuario} contendo os dados do usuário autenticado,
+	 *         ou {@code null} se as credenciais forem inválidas
+	 *         
+	 * @throws RuntimeException se ocorrer um erro ao acessar o banco de dados
+	 */
 	public Usuario validateCredential(String login, String senha) {
 		
-		String sql = String.format("SELECT * FROM %s WHERE usuario = ? and senha = ?", TABLE_NAME);
+		String sql = 
+				String.format("SELECT * FROM %s WHERE usuario = ? and senha = ?", 
+				DataBaseSchema.USUARIO.getTableName());
 		
 		Usuario usuario = null;
-		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-			stmt.setString(1, login);
-			stmt.setString(2, senha);
-			ResultSet resultSet = stmt.executeQuery();
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setString(1, login);
+			preparedStatement.setString(2, senha);
+			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				usuario = new Usuario();
-				usuario.setUsuario(resultSet.getString(COLUMN_USUARIO));
-				usuario.setSenha(resultSet.getString(COLUMN_SENHA));
+				usuario.setUsuario(resultSet.getString(DataBaseSchema.USUARIO.getColumns()[1]));
+				usuario.setSenha(resultSet.getString(DataBaseSchema.USUARIO.getColumns()[2]));
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException(ERROR_INVALID_USER, e);
+			throw new RuntimeException(ERROR_INVALID_USER);
 		}
 
 		return usuario;

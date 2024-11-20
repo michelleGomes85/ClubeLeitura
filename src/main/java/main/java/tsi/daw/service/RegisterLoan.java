@@ -1,7 +1,7 @@
 package main.java.tsi.daw.service;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.util.Date;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,7 +42,7 @@ public class RegisterLoan implements Service {
 		Revista revista = revistaDAO.findById(idRevista);
 		revista.setDisponibilidade(false);
 		emprestimo.setRevista(revista);
-		emprestimo.setDataEmprestimo(LocalDate.now());
+		emprestimo.setDataEmprestimo(new Date());
 
 		try {
 			revistaDAO.update(revista);

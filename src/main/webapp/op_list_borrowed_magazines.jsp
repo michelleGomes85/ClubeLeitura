@@ -1,3 +1,5 @@
+<%@page import="main.java.tsi.daw.dao.PessoaDAO"%>
+<%@page import="main.java.tsi.daw.model.Emprestimo"%>
 <%@page import="main.java.tsi.daw.dao.EmprestimoDAO"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
@@ -28,26 +30,26 @@
 	<c:import url="header.jsp"></c:import>
 
     <%
-    	Map<Long, Revista> emprestimoRevistas = new HashMap<>();
-        try {
-        	EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
-        	emprestimoRevistas = emprestimoDAO.listRevistaEmprestimo();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+	List<Emprestimo> emprestimos = new ArrayList<>();
+	try {
+		EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+		emprestimos = emprestimoDAO.getEmprestimosAtivos();
 
-        request.setAttribute("emprestimoRevistas", emprestimoRevistas);
+		request.setAttribute("emprestimos", emprestimos);
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
     %>
 
     <main class="form-container">
     	
     	<div  class="register-form">
 
-			<h1>Lista de Revistas</h1>
+			<h1>Lista de Revistas Emprestadas</h1>
 
 			<c:choose>
 				<%-- Mensagem para lista vazia --%>
-				<c:when test="${empty emprestimoRevistas}">
+				<c:when test="${empty emprestimos}">
 					<p class="error-message">Não há nenhuma revista emprestada no momento.</p>
 				</c:when>
 
@@ -56,26 +58,33 @@
 					<table class="revista-table">
 						<thead>
 							<tr>
-								<th>ID</th>
+								<th>Caixa</th>
 								<th>Coleção</th>
 								<th>Edição</th>
 								<th>Ano</th>
+								<th>Data Emprestimo</th>
+								<th>Pessoa</th>
 								<th>Ações</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="entry" items="${emprestimoRevistas}">
+							<c:forEach var="emprestimo" items="${emprestimos}">
 								<tr>
-									<td><c:out value="${entry.value.idRevista}" /></td>
-									<td><c:out value="${entry.value.colecao}" /></td>
-									<td><c:out value="${entry.value.numeroEdicao}" /></td>
-									<td><c:out value="${entry.value.anoRevista}" /></td>
+									<td><c:out value="${emprestimo.revista.caixa.cor}" /></td>
+									<td><c:out value="${emprestimo.revista.colecao}" /></td>
+									<td><c:out value="${emprestimo.revista.numeroEdicao}" /></td>
+									<td><c:out value="${emprestimo.revista.anoRevista}" /></td>
 									<td>
-										<!-- Botão para devolver -->
+										<fmt:formatDate value="${emprestimo.dataEmprestimo}" pattern="dd/MM/yyyy"/>
+									</td>
+									<td>
+										<c:out value="${emprestimo.pessoa.nome}" />
+									</td>
+									<td>
 										<form action="${pageContext.request.contextPath}/controller"
 											method="post" class="class_return">
-											<input type="hidden" name="idEmprestimo" value="${entry.key}" />
-											<input type="hidden" name="idRevista" value="${entry.value.idRevista}" />
+											<input type="hidden" name="idEmprestimo" value="${emprestimo.idEmprestimo}" />
+											<input type="hidden" name="idRevista" value="${emprestimo.revista.idRevista}" />
 											<button type="submit" class="btn-devolver" title="Devolver">
 												<i class="fas fa-undo"></i>
 											</button>

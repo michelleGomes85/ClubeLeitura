@@ -1,7 +1,7 @@
 package main.java.tsi.daw.service;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.util.Date;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,7 +38,7 @@ public class RegisterReturn implements Service {
 			revistaDAO.update(revista);
 			
 			Emprestimo emprestimo = emprestimoDAO.findById(Long.valueOf(idEmprestimo));
-			emprestimo.setDataDevolucao(LocalDate.now());
+			emprestimo.setDataDevolucao(new Date());
 			
 			emprestimoDAO.update(emprestimo);
 			

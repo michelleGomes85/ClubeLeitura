@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.tsi.daw.bd.ConnectionFactory;
+import main.java.tsi.daw.bd.DataBaseSchema;
 import main.java.tsi.daw.model.Caixa;
 
 /**
@@ -25,10 +26,6 @@ public class CaixaDAO {
     private static final String ERROR_LIST = "Erro ao listar caixas do banco de dados";
     private static final String ERROR_FIND_BY_ID = "Erro ao buscar caixa pelo ID no banco de dados";
     
-    private static final String TABLE_NAME = "caixa";
-    private static final String COLUMN_ID = "idcaixa";
-    private static final String COLUMN_COR = "cor";
-    
     private Connection connection;
     
     public CaixaDAO() {
@@ -42,13 +39,16 @@ public class CaixaDAO {
      */
     public void insert(Caixa caixa) {
     	
-        String sql = String.format("INSERT INTO %s (%s) VALUES (?)", TABLE_NAME, COLUMN_COR);
+        String sql = 
+        		String.format("INSERT INTO %s (%s) VALUES (?)", 
+        		DataBaseSchema.CAIXA.getTableName(), 
+        		DataBaseSchema.CAIXA.getColumns()[1]);
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, caixa.getCor());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(ERROR_INSERT, e);
+            throw new RuntimeException(ERROR_INSERT);
         }
     }
     
@@ -59,14 +59,18 @@ public class CaixaDAO {
      */
     public void update(Caixa caixa) {
     	
-        String sql = String.format("UPDATE %s SET %s = ? WHERE %s = ?", TABLE_NAME, COLUMN_COR, COLUMN_ID);
+        String sql = 
+        		String.format("UPDATE %s SET %s = ? WHERE %s = ?", 
+				DataBaseSchema.CAIXA.getTableName(), 
+				DataBaseSchema.CAIXA.getColumns()[1], 
+				DataBaseSchema.CAIXA.getColumns()[0]);
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, caixa.getCor());
             preparedStatement.setLong(2, caixa.getIdCaixa());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(ERROR_UPDATE, e);
+            throw new RuntimeException(ERROR_UPDATE);
         }
     }
     
@@ -77,14 +81,61 @@ public class CaixaDAO {
      */
     public void delete(Caixa caixa) {
     	
-        String sql = String.format("DELETE FROM %s WHERE %s = ?", TABLE_NAME, COLUMN_ID);
+        String sql = 
+        		String.format("DELETE FROM %s WHERE %s = ?", 
+        		DataBaseSchema.CAIXA.getTableName(), 
+        		DataBaseSchema.CAIXA.getColumns()[0]);
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, caixa.getIdCaixa());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(ERROR_DELETE, e);
+            throw new RuntimeException(ERROR_DELETE);
         }
+    }
+    
+    /**
+	 * Metódo auxiliar que transforma um resultSet de consulta em um objeto Caixa
+	 * 
+	 * @param resultSet
+	 * @return
+	 * @throws SQLException
+	 */
+	private Caixa mapResultSetToCaixa(ResultSet resultSet) throws SQLException {
+		Caixa caixa = new Caixa();
+        caixa.setIdCaixa(resultSet.getLong(DataBaseSchema.CAIXA.getColumns()[0]));
+        caixa.setCor(resultSet.getString(DataBaseSchema.CAIXA.getColumns()[1]));
+        
+        return caixa;
+	}
+
+    /**
+     * Busca uma caixa pelo seu ID.
+     *
+     * @param id ID da Caixa a ser encontrada
+     * @return Objeto Caixa correspondente ao ID, ou null se não encontrado
+     */
+    public Caixa findById(long id) {
+    	
+    	String sql = 
+    			String.format("SELECT * FROM %s WHERE %s = ?", 
+                DataBaseSchema.CAIXA.getTableName(), 
+                DataBaseSchema.CAIXA.getColumns()[0]);
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        	
+            preparedStatement.setLong(1, id);
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if (resultSet.next())
+	            return mapResultSetToCaixa(resultSet);
+            
+        } catch (SQLException e) {
+            throw new RuntimeException(ERROR_FIND_BY_ID);
+        }
+        
+        return null; 
     }
     
     /**
@@ -96,52 +147,19 @@ public class CaixaDAO {
     	
         List<Caixa> listCaixas = new ArrayList<>();
         
-        String sql = String.format("SELECT * FROM %s", TABLE_NAME);
+        String sql = 
+        		String.format("SELECT * FROM %s", 
+        		DataBaseSchema.CAIXA.getTableName());
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             
-            while (resultSet.next()) {
-                Caixa caixa = new Caixa();
-                caixa.setIdCaixa(resultSet.getLong(COLUMN_ID));
-                caixa.setCor(resultSet.getString(COLUMN_COR));
-                listCaixas.add(caixa);
-            }
-            
+            while (resultSet.next())
+                listCaixas.add(mapResultSetToCaixa(resultSet));
         } catch (SQLException e) {
-            throw new RuntimeException(ERROR_LIST, e);
+            throw new RuntimeException(ERROR_LIST);
         }
         
         return listCaixas;
-    }
-
-    /**
-     * Busca uma caixa pelo seu ID.
-     *
-     * @param id ID da Caixa a ser encontrada
-     * @return Objeto Caixa correspondente ao ID, ou null se não encontrado
-     */
-    public Caixa findById(long id) {
-    	
-        String sql = String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, COLUMN_ID);
-        
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-        	
-            preparedStatement.setLong(1, id);
-            
-            ResultSet resultSet = preparedStatement.executeQuery();
-            
-            if (resultSet.next()) {
-                Caixa caixa = new Caixa();
-                caixa.setIdCaixa(resultSet.getLong(COLUMN_ID));
-                caixa.setCor(resultSet.getString(COLUMN_COR));
-                return caixa;
-            }
-            
-        } catch (SQLException e) {
-            throw new RuntimeException(ERROR_FIND_BY_ID, e);
-        }
-        
-        return null; 
     }
 } // class CaixaDAO

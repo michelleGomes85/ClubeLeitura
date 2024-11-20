@@ -44,9 +44,8 @@ public class ClubeLeituraController extends HttpServlet {
             url = service.execute(request, response);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
-            System.out.println("erro");
         }
 
         request.getRequestDispatcher(url).forward(request, response);
     }
-}
+} // class ClubeLeituraController

@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.tsi.daw.bd.ConnectionFactory;
-import main.java.tsi.daw.model.Revista;
+import main.java.tsi.daw.bd.DataBaseSchema;
 import main.java.tsi.daw.model.Caixa;
+import main.java.tsi.daw.model.Revista;
 
 /**
  * Classe de acesso a dados (DAO) para manipulação de objetos {@link Revista} no
@@ -26,15 +27,6 @@ public class RevistaDAO {
 	private static final String ERROR_LIST = "Erro ao listar revistas do banco de dados";
 	private static final String ERROR_FIND_BY_ID = "Erro ao buscar revista pelo ID no banco de dados";
 
-	private static final String TABLE_NAME = "revista";
-	
-	private static final String COLUMN_ID = "idrevista";
-	private static final String COLUMN_COLECAO = "colecao";
-	private static final String COLUMN_NUMERO_EDICAO = "num_edicao";
-	private static final String COLUMN_ANO_REVISTA = "ano_revista";
-	private static final String COLUMN_DISPONIBILIDADE = "disponibilidade";
-	private static final String COLUMN_CAIXA_ID = "idcaixa";
-
 	private Connection connection;
 
 	public RevistaDAO() {
@@ -48,9 +40,14 @@ public class RevistaDAO {
 	 */
 	public void insert(Revista revista) {
 
-		String sql = String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?)", 
-				TABLE_NAME,	COLUMN_COLECAO, COLUMN_NUMERO_EDICAO, COLUMN_ANO_REVISTA, 
-				COLUMN_DISPONIBILIDADE, COLUMN_CAIXA_ID);
+		String sql = 
+				String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?)", 
+				DataBaseSchema.REVISTA.getTableName(),
+				DataBaseSchema.REVISTA.getColumns()[1],
+				DataBaseSchema.REVISTA.getColumns()[2],
+				DataBaseSchema.REVISTA.getColumns()[3],
+				DataBaseSchema.REVISTA.getColumns()[4],
+				DataBaseSchema.REVISTA.getColumns()[5]);
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, revista.getColecao());
@@ -60,7 +57,7 @@ public class RevistaDAO {
 			preparedStatement.setLong(5, revista.getCaixa().getIdCaixa());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			throw new RuntimeException(ERROR_INSERT, e);
+			throw new RuntimeException(ERROR_INSERT);
 		}
 	}
 
@@ -71,9 +68,15 @@ public class RevistaDAO {
 	 */
 	public void update(Revista revista) {
 		
-		String sql = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?", 
-				TABLE_NAME, COLUMN_COLECAO, COLUMN_NUMERO_EDICAO, COLUMN_ANO_REVISTA, 
-				COLUMN_DISPONIBILIDADE, COLUMN_CAIXA_ID, COLUMN_ID);
+		String sql = 
+				String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?", 
+				DataBaseSchema.REVISTA.getTableName(),
+				DataBaseSchema.REVISTA.getColumns()[1],
+				DataBaseSchema.REVISTA.getColumns()[2],
+				DataBaseSchema.REVISTA.getColumns()[3],
+				DataBaseSchema.REVISTA.getColumns()[4],
+				DataBaseSchema.REVISTA.getColumns()[5],
+				DataBaseSchema.REVISTA.getColumns()[0]);
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, revista.getColecao());
@@ -84,7 +87,7 @@ public class RevistaDAO {
 			preparedStatement.setLong(6, revista.getIdRevista());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			throw new RuntimeException(ERROR_UPDATE, e);
+			throw new RuntimeException(ERROR_UPDATE);
 		}
 	}
 
@@ -95,51 +98,42 @@ public class RevistaDAO {
 	 */
 	public void delete(Revista revista) {
 		
-		String sql = String.format("DELETE FROM %s WHERE %s = ?", TABLE_NAME, COLUMN_ID);
+		String sql = 
+				String.format("DELETE FROM %s WHERE %s = ?", 
+				DataBaseSchema.REVISTA.getTableName(),
+				DataBaseSchema.REVISTA.getColumns()[0]);
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setLong(1, revista.getIdRevista());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			throw new RuntimeException(ERROR_DELETE, e);
+			throw new RuntimeException(ERROR_DELETE);
 		}
 	}
-
+	
 	/**
-	 * Lista todas as revistas cadastradas no banco de dados.
-	 *
-	 * @return Lista de objetos Revista
+	 * Metódo auxiliar que transforma um resultSet de consulta em um objeto Revista
+	 * 
+	 * @param resultSet
+	 * @return
+	 * @throws SQLException
 	 */
-	public List<Revista> list() {
+	private Revista mapResultSetToRevista(ResultSet resultSet) throws SQLException {
 		
-		List<Revista> listRevistas = new ArrayList<>();
+	    Revista revista = new Revista();
+	    revista.setIdRevista(resultSet.getLong(DataBaseSchema.REVISTA.getColumns()[0]));
+	    revista.setColecao(resultSet.getString(DataBaseSchema.REVISTA.getColumns()[1]));
+	    revista.setNumeroEdicao(resultSet.getInt(DataBaseSchema.REVISTA.getColumns()[2]));
+	    revista.setAnoRevista(resultSet.getInt(DataBaseSchema.REVISTA.getColumns()[3]));
+	    revista.setDisponibilidade(resultSet.getBoolean(DataBaseSchema.REVISTA.getColumns()[4]));
 
-		String sql = String.format("SELECT * FROM %s", TABLE_NAME);
+	    Caixa caixa = new Caixa();
+	    caixa.setIdCaixa(resultSet.getLong(DataBaseSchema.REVISTA.getColumns()[5]));
+	    revista.setCaixa(caixa);
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			while (resultSet.next()) {
-				
-				Revista revista = new Revista();
-				revista.setIdRevista(resultSet.getLong(COLUMN_ID));
-				revista.setColecao(resultSet.getString(COLUMN_COLECAO));
-				revista.setNumeroEdicao(resultSet.getInt(COLUMN_NUMERO_EDICAO));
-				revista.setAnoRevista(resultSet.getInt(COLUMN_ANO_REVISTA));
-				revista.setDisponibilidade(resultSet.getBoolean(COLUMN_DISPONIBILIDADE));
-
-				Caixa caixa = new Caixa();
-				caixa.setIdCaixa(resultSet.getLong(COLUMN_CAIXA_ID));
-				revista.setCaixa(caixa);
-
-				listRevistas.add(revista);
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException(ERROR_LIST, e);
-		}
-
-		return listRevistas;
+	    return revista;
 	}
+
 
 	/**
 	 * Busca uma revista pelo seu ID.
@@ -149,32 +143,49 @@ public class RevistaDAO {
 	 */
 	public Revista findById(long id) {
 		
-		String sql = String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, COLUMN_ID);
-
+		String sql = 
+				String.format("SELECT * FROM %s WHERE %s = ?", 
+				DataBaseSchema.REVISTA.getTableName(),
+				DataBaseSchema.REVISTA.getColumns()[0]);
+		
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setLong(1, id);
 
 			ResultSet resultSet = preparedStatement.executeQuery();
 
-			if (resultSet.next()) {
-				Revista revista = new Revista();
-				revista.setIdRevista(resultSet.getLong(COLUMN_ID));
-				revista.setColecao(resultSet.getString(COLUMN_COLECAO));
-				revista.setNumeroEdicao(resultSet.getInt(COLUMN_NUMERO_EDICAO));
-				revista.setAnoRevista(resultSet.getInt(COLUMN_ANO_REVISTA));
-				revista.setDisponibilidade(resultSet.getBoolean(COLUMN_DISPONIBILIDADE));
-
-				Caixa caixa = new Caixa();
-				caixa.setIdCaixa(resultSet.getLong(COLUMN_CAIXA_ID));
-				revista.setCaixa(caixa);
-
-				return revista;
-			}
+			if (resultSet.next())
+	            return mapResultSetToRevista(resultSet);
 		} catch (SQLException e) {
-			throw new RuntimeException(ERROR_FIND_BY_ID, e);
+			throw new RuntimeException(ERROR_FIND_BY_ID);
 		}
 
 		return null;
+	}
+	
+	/**
+	 * Lista todas as revistas cadastradas no banco de dados.
+	 *
+	 * @return Lista de objetos Revista
+	 */
+	public List<Revista> list() {
+		
+		List<Revista> listRevistas = new ArrayList<>();
+
+		String sql = 
+				String.format("SELECT * FROM %s", 
+				DataBaseSchema.REVISTA.getTableName());
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next())
+	            listRevistas.add(mapResultSetToRevista(resultSet));
+		} catch (SQLException e) {
+			throw new RuntimeException(ERROR_LIST);
+		}
+
+		return listRevistas;
 	}
 	
 	/**
@@ -187,66 +198,24 @@ public class RevistaDAO {
 
 	    List<Revista> listRevistas = new ArrayList<>();
 
-	    String sql = String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, COLUMN_DISPONIBILIDADE);
+	    String sql = 
+	    		String.format("SELECT * FROM %s WHERE %s = ?", 
+				DataBaseSchema.REVISTA.getTableName(),
+				DataBaseSchema.REVISTA.getColumns()[4]);
 
 	    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+	    	
+	    	
 	        preparedStatement.setBoolean(1, disponibilidade);
 	        ResultSet resultSet = preparedStatement.executeQuery();
 
-	        while (resultSet.next()) {
-	            Revista revista = new Revista();
-	            revista.setIdRevista(resultSet.getLong(COLUMN_ID));
-	            revista.setColecao(resultSet.getString(COLUMN_COLECAO));
-	            revista.setNumeroEdicao(resultSet.getInt(COLUMN_NUMERO_EDICAO));
-	            revista.setAnoRevista(resultSet.getInt(COLUMN_ANO_REVISTA));
-	            revista.setDisponibilidade(resultSet.getBoolean(COLUMN_DISPONIBILIDADE));
-
-	            Caixa caixa = new Caixa();
-	            caixa.setIdCaixa(resultSet.getLong(COLUMN_CAIXA_ID));
-	            revista.setCaixa(caixa);
-
-	            listRevistas.add(revista);
-	        }
+	        while (resultSet.next())
+	            listRevistas.add(mapResultSetToRevista(resultSet));
+	        
 	    } catch (SQLException e) {
-	        throw new RuntimeException(ERROR_LIST, e);
+	        throw new RuntimeException(ERROR_LIST);
 	    }
 
 	    return listRevistas;
-	}
-	
-	/**
-	 * Lista revistas associadas a uma pessoa específica.
-	 *
-	 * @param idPessoa ID da pessoa cujas revistas serão buscadas
-	 * @return Lista de objetos Revista associados à pessoa
-	 */
-	public List<Revista> listByPessoa(long idPessoa) {
-		
-	    String sql = "SELECT r.idrevista, r.colecao, r.num_edicao, r.ano_revista, r.disponibilidade "
-	               + "FROM emprestimo e "
-	               + "INNER JOIN revista r ON e.idRevista = r.idRevista "
-	               + "WHERE e.idPessoa = ? AND e.datadevolucao IS NULL";
-
-	    List<Revista> revistas = new ArrayList<>();
-
-	    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-	        preparedStatement.setLong(1, idPessoa);
-
-	        ResultSet resultSet = preparedStatement.executeQuery();
-
-	        while (resultSet.next()) {
-	            Revista revista = new Revista();
-	            revista.setIdRevista(resultSet.getLong("idrevista"));
-	            revista.setColecao(resultSet.getString("colecao"));
-	            revista.setNumeroEdicao(resultSet.getInt("num_edicao"));
-	            revista.setAnoRevista(resultSet.getInt("ano_revista"));
-	            revista.setDisponibilidade(resultSet.getBoolean("disponibilidade"));
-	            revistas.add(revista);
-	        }
-	    } catch (SQLException e) {
-	        throw new RuntimeException("Erro ao listar revistas por pessoa", e);
-	    }
-
-	    return revistas;
 	}
 } // class RevistaDAO

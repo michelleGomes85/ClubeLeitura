@@ -1,24 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <%@ include file="authentication.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-
-<title>Clube da Leitura - Registro Pessoa</title>
-
-<!-- Link para o Favicon -->
-<link rel="icon" href="${pageContext.request.contextPath}/img/favicon.png" type="image/x-icon">
-
-<!-- Incluindo a biblioteca de ícones do Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-<!-- Arquivos de estilo -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/options_styles.css"/>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/registrations_styles.css"/>
+	<meta charset="UTF-8">
+	
+	<!-- Incluindo a biblioteca de ícones do Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	
+	<!-- Arquivos de estilo -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/options_styles.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/registrations_styles.css"/>
 
 </head>
 <body>

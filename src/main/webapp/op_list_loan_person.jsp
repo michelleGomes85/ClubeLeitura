@@ -1,13 +1,17 @@
+<%@page import="main.java.tsi.daw.model.Emprestimo"%>
+<%@page import="main.java.tsi.daw.dao.EmprestimoDAO"%>
 <%@page import="main.java.tsi.daw.dao.RevistaDAO"%>
 <%@page import="main.java.tsi.daw.dao.PessoaDAO"%>
 <%@page import="main.java.tsi.daw.model.Revista"%>
 <%@page import="main.java.tsi.daw.model.Pessoa"%>
 <%@page import="java.util.List"%>
+
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<%@ include file="authentication.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,14 +40,14 @@
         
         if (idPessoaParam != "") {
      		
-        	List<Revista> revistas = null;
+        	List<Emprestimo> emprestimos = null;
 
             if (idPessoaParam != null) {
                 Long idPessoa = Long.parseLong(idPessoaParam);
-
-                RevistaDAO revistaDao = new RevistaDAO();
-                revistas = revistaDao.listByPessoa(idPessoa);
-                request.setAttribute("revistas", revistas);
+				
+                EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+                emprestimos = emprestimoDAO.getEmprestimosPorPessoa(idPessoa);
+                request.setAttribute("emprestimos", emprestimos);
             }
         }
         
@@ -72,23 +76,39 @@
 				<c:choose>
 
 					<%-- Tabela para exibir as revistas da pessoa selecionada --%>
-					<c:when test="${not empty revistas}">
+					<c:when test="${not empty emprestimos}">
 						<table class="revista-table">
 							<thead>
 								<tr>
-									<th>ID Revista</th>
+									<th>Caixa</th>
 									<th>Coleção</th>
 									<th>Edição</th>
 									<th>Ano</th>
+									<th>Data Emprestimo</th>
+									<th>Data Devolução</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="revista" items="${revistas}">
+								<c:forEach var="emprestimo" items="${emprestimos}">
 									<tr>
-										<td>${revista.idRevista}</td>
-										<td>${revista.colecao}</td>
-										<td>${revista.numeroEdicao}</td>
-										<td>${revista.anoRevista}</td>
+										<td><c:out value="${emprestimo.revista.caixa.cor}" /></td>
+										<td><c:out value="${emprestimo.revista.colecao}" /></td>
+										<td><c:out value="${emprestimo.revista.numeroEdicao}" /></td>
+										<td><c:out value="${emprestimo.revista.anoRevista}" /></td>
+										<td>
+											<fmt:formatDate value="${emprestimo.dataEmprestimo}" pattern="dd/MM/yyyy"/>
+										</td>
+										<td>
+											<c:choose>
+												<c:when test="${emprestimo.dataDevolucao == null}">
+	                   								PENDENTE
+	               								</c:when>
+	               								
+												<c:otherwise>
+													<fmt:formatDate value="${emprestimo.dataDevolucao}" pattern="dd/MM/yyyy" />
+												</c:otherwise>
+											</c:choose>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -96,9 +116,8 @@
 					</c:when>
 
 					<c:otherwise>
-						<c:if test="${not empty idPessoaParam and empty revistas}">
-							<p class="error-message space">Não há revistas emprestadas
-								para esta pessoa.</p>
+						<c:if test="${not empty idPessoaParam and empty emprestimos}">
+							<p class="error-message space">Não há revistas emprestadas para esta pessoa.</p>
 						</c:if>
 					</c:otherwise>
 				</c:choose>

@@ -1,10 +1,11 @@
+<%@page import="main.java.tsi.daw.dao.PessoaDAO"%>
+<%@page import="main.java.tsi.daw.model.Emprestimo"%>
 <%@page import="main.java.tsi.daw.dao.EmprestimoDAO"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="java.util.Map"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="main.java.tsi.daw.dao.RevistaDAO"%>
 <%@page import="main.java.tsi.daw.model.Revista"%>
 <%@page import="java.util.List"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -27,19 +28,19 @@
 
 	<c:import url="header.jsp"></c:import>
 
-    <%
-    	Map<Long, Revista> emprestimoRevistas = new HashMap<>();
-        try {
-        	EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
-        	emprestimoRevistas = emprestimoDAO.listRevistaEmprestimoAtrasado();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+	<%
+	List<Emprestimo> emprestimos = new ArrayList<>();
+	try {
+		EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+		emprestimos = emprestimoDAO.getEmprestimosAtrasados();
 
-        request.setAttribute("emprestimoRevistas", emprestimoRevistas);
-    %>
+		request.setAttribute("emprestimos", emprestimos);
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	%>
 
-    <main class="form-container">
+	<main class="form-container">
     	
     	<div  class="register-form">
 
@@ -47,7 +48,7 @@
 
 			<c:choose>
 				<%-- Mensagem para lista vazia --%>
-				<c:when test="${empty emprestimoRevistas}">
+				<c:when test="${empty emprestimos}">
 					<p class="error-message">Não há nenhuma revista atrasada no momento.</p>
 				</c:when>
 
@@ -56,19 +57,27 @@
 					<table class="revista-table">
 						<thead>
 							<tr>
-								<th>ID</th>
+								<th>Caixa</th>
 								<th>Coleção</th>
 								<th>Edição</th>
 								<th>Ano</th>
+								<th>Data Emprestimo</th>
+								<th>Pessoa</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="entry" items="${emprestimoRevistas}">
+							<c:forEach var="emprestimo" items="${emprestimos}">
 								<tr>
-									<td><c:out value="${entry.value.idRevista}" /></td>
-									<td><c:out value="${entry.value.colecao}" /></td>
-									<td><c:out value="${entry.value.numeroEdicao}" /></td>
-									<td><c:out value="${entry.value.anoRevista}" /></td>
+									<td><c:out value="${emprestimo.revista.caixa.cor}" /></td>
+									<td><c:out value="${emprestimo.revista.colecao}" /></td>
+									<td><c:out value="${emprestimo.revista.numeroEdicao}" /></td>
+									<td><c:out value="${emprestimo.revista.anoRevista}" /></td>
+									<td>
+										<fmt:formatDate value="${emprestimo.dataEmprestimo}" pattern="dd/MM/yyyy"/>
+									</td>
+									<td>
+										<c:out value="${emprestimo.pessoa.nome}" />
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
