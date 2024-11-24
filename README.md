@@ -84,14 +84,23 @@ O frontend foi desenvolvido com **HTML**, **JSP**, **CSS** e **JavaScript**, com
 ### Cadastro de Caixa
 ![Cadastro de Caixa](assets/register_box.png)
 
+### Cadastro de Pessoa
+![Cadastro de Pessoa](assets/register_person.png)
+
 ### Cadastro de Revista
 ![Cadastro de Revista](assets/register_magazine.png)
 
 ### Registro de Empréstimo
 ![Registro de Empréstimo](assets/register_loan.png)
 
-### Devolução de Empréstimo
-![Devolução de Empréstimo](assets/register_return.png)
+### Lista de emprestimos com opção para devolução
+![Devolução de Empréstimo](assets/list_borrowed_magazines.png)
+
+### Lista de emprestimos atrasados
+![Emprestimos atrasados](assets/list_borrowed_magazines_late.png)
+
+### Lista de emprestimos por pessoa
+![Emprestimos atrasados](assets/list_loan_person.png)
 
 ---
 
