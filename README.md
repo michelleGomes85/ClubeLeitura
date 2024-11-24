@@ -108,7 +108,7 @@ O frontend foi desenvolvido com **HTML**, **JSP**, **CSS** e **JavaScript**, com
 
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/ClubeLeitura.git
+   git clone https://github.com/michelleGomes85/ClubeLeitura.git
    ```
 2. Configure o banco de dados:
    
