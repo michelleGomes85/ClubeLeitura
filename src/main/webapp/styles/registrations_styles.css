@@ -4,6 +4,7 @@ body {
 	display: flex;
 	align-items: center;
 }
+
 .conteiner-out {
 	display: flex;
 	justify-content: center;
@@ -12,159 +13,159 @@ body {
 }
 
 .register-form {
-    background-color: #000;
-    border: 2px solid #fff;
-    padding: 50px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3); 
-    width: auto;
-    max-height: 700px;
-    overflow-y: auto;
-    color: #fff; 
-    position: relative; 
-    z-index: 10;
+	background-color: #000;
+	border: 2px solid #fff;
+	padding: 50px;
+	border-radius: 10px;
+	box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+	width: auto;
+	max-height: 700px;
+	overflow-y: auto;
+	color: #fff;
+	position: relative;
+	z-index: 10;
 }
 
 .min {
-	min-width: 750px; 
+	min-width: 750px;
 	height: 380px;
 }
 
 .register-form h1 {
-    text-align: left;
-    margin-bottom: 20px;
-    font-size: 2rem;
-    color: #fff; 
+	text-align: left;
+	margin-bottom: 20px;
+	font-size: 2rem;
+	color: #fff;
 }
 
 .register-form p {
-    text-align: left;
-    margin-bottom: 20px;
-    font-size: 1rem;
-    color: #ccc; 
+	text-align: left;
+	margin-bottom: 20px;
+	font-size: 1rem;
+	color: #ccc;
 }
 
 .form-group {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: #fff; 
+	display: block;
+	margin-bottom: 10px;
+	font-weight: bold;
+	color: #fff;
 }
 
 .form-group input {
-    width: 100%;
-    padding: 15px;
-    border: 2px solid #fff; 
-    border-radius: 5px; 
-    font-size: 1rem;
-    background-color: #111;
-    color: #fff; 
+	width: 100%;
+	padding: 15px;
+	border: 2px solid #fff;
+	border-radius: 5px;
+	font-size: 1rem;
+	background-color: #111;
+	color: #fff;
 }
 
 .form-group input::placeholder {
-    color: #ccc;
+	color: #ccc;
 }
 
 .form-group input:focus {
-    border-color: #3a86ff; 
-    outline: none;
+	border-color: #3a86ff;
+	outline: none;
 }
 
 .btn-submit {
-    background: linear-gradient(45deg, #3a86ff, #00509e);
-    color: #fff;
-    border: none; 
-    padding: 15px; 
-    width: 100%;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
+	background: linear-gradient(45deg, #3a86ff, #00509e);
+	color: #fff;
+	border: none;
+	padding: 15px;
+	width: 100%;
+	font-size: 1.2rem;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background 0.3s;
 }
 
 .btn-submit:hover {
-    background: linear-gradient(45deg, #00509e, #002a6f); 
+	background: linear-gradient(45deg, #00509e, #002a6f);
 }
 
 .modal {
-    display: none; 
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.7);
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
 }
 
 .modal-content {
-    background: #fff;
-    padding: 20px 30px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	background: #fff;
+	padding: 20px 30px;
+	border-radius: 10px;
+	text-align: center;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .modal-content h2 {
-    color: #162b66;
-    margin-bottom: 10px;
+	color: #162b66;
+	margin-bottom: 10px;
 }
 
 .modal-content p {
-    color: #555;
-    margin-bottom: 20px;
+	color: #555;
+	margin-bottom: 20px;
 }
 
 .modal .btn-submit {
-    background: #1e88e5;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
+	background: #1e88e5;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	font-size: 1rem;
+	cursor: pointer;
 }
 
 .modal .btn-submit:hover {
-    background: #1565c0;
+	background: #1565c0;
 }
 
 /* Estilos para o Select */
 select {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #fff;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
+	width: 100%;
+	padding: 10px;
+	margin: 10px 0;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #fff;
+	font-size: 16px;
+	transition: border-color 0.3s ease;
 }
 
 select:focus {
-    border-color: #007bff;
-    outline: none;
+	border-color: #007bff;
+	outline: none;
 }
 
 select option {
-    padding: 10px;
+	padding: 10px;
 }
 
 .form-group {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 label {
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    display: block;
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 8px;
+	display: block;
 }
 
 .error-message {
@@ -172,7 +173,7 @@ label {
 }
 
 .space {
-	margin-top: 20px;	
+	margin-top: 20px;
 }
 
 .revista-table {
@@ -209,4 +210,19 @@ label {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+@media screen and (max-height: 800px) {
+	
+	.form-container {
+		height: 400px;
+	}
+	.register-form {
+		max-height: 500px;
+		overflow: auto;
+		scrollbar-width: none;
+	}
+	.register-form::-webkit-scrollbar {
+		display: none;
+	}
 }
